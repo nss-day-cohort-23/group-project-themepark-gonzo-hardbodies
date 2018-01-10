@@ -1,0 +1,18 @@
+#map {
+    display: grid;
+    grid-template-rows: repeat(3, 50px);
+    grid-template-columns: repeat(3, 50px);
+    grid-gap: 3.5px;
+    padding: 20%;
+    justify-content: right;
+    /* background-image: url(../images/demoImg.jpg); */
+}
+
+.areaMap {
+    height: 50px;
+    width: 50px;
+    background-color: blanchedalmond;
+    border: 1px solid black;
+    
+}
+
