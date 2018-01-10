@@ -1,7 +1,17 @@
 "use strict";
 let factory = require("./factory");
 
-factory.fetchThemePark()
-.then(data => {
-    console.log("data",data);
+factory.fetchAttractions()
+.then(attractions => {
+    console.log("attractions",attractions);
+});
+
+factory.fetchAreas()
+.then(areas => {
+    console.log("areas",areas);
+});
+
+factory.fetchAttractionTypes()
+.then(types => {
+    console.log("types",types);
 });
