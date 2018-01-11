@@ -1,14 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
-
-function outputToDom(attractionArray){
-    let currentShow = document.getElementById("currentShows");
-    currentShow.innerHTML="";
-    for (let i = 0; i < attractionArray.length; i++){
-        currentShow.innerHTML+= `<p><a href="#">${attractionArray[i]}</a></p>`;
-    }
-}
+const {outputToDom} = require('./interactDom');
 
 
 
@@ -29,7 +22,7 @@ module.exports.attractionName = (attractionsData) => {
                 console.log("char", +event.target.id.charAt(event.target.id.length-1));
                 if (+event.target.id.charAt(event.target.id.length-1) === attraction.area_id){
                 
-                attractionArray.push(attraction.name);
+                attractionArray.push(attraction);
             
 
         
@@ -63,7 +56,7 @@ module.exports.attractionName = (attractionsData) => {
 // Then all attraction names assigned to that area should be listed in the left 30% of the screen
 // And the attraction type should be in parenthesis next to the name
 // And the name should be a hyperlink
-},{"jquery":6}],2:[function(require,module,exports){
+},{"./interactDom":4,"jquery":7}],2:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
@@ -114,7 +107,7 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":6}],3:[function(require,module,exports){
+},{"jquery":7}],3:[function(require,module,exports){
 "use strict";
 
 const $ = require("jquery");
@@ -138,11 +131,23 @@ module.exports.formatData = (data) => {
     });
     return attractions;
 };
-},{"jquery":6}],4:[function(require,module,exports){
+},{"jquery":7}],4:[function(require,module,exports){
+'use strict';
+
+module.exports.outputToDom= (attractionArray) =>{
+    let currentShow = document.getElementById("currentShows");
+    currentShow.innerHTML = "";
+    for (let i = 0; i < attractionArray.length; i++) {
+        currentShow.innerHTML += `<p><a href="#">${attractionArray[i].name}</a></p>`;
+    }
+};
+},{}],5:[function(require,module,exports){
 "use strict";
 let factory = require("./factory");
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
+let { outputToDom } = require('./interactDom');
+
 
 let areaAttractions = require("./areaAttractions");
 
@@ -152,20 +157,33 @@ let promArr =[
     factory.fetchAttractionTypes()    
 ];
 
+function attractionTimes(attractions) {
+    let arrayOfAttractions = [];
+    attractions.forEach(attraction => {
+        if (!attraction.times) {
+            arrayOfAttractions.push(attraction);
+        } else {
+           if (attractionsByTime(attraction.times)){
+               arrayOfAttractions.push(attraction);
+           }
+        }
 
-
+    });
+    console.log('arrayOfAttractions',arrayOfAttractions);
+    outputToDom(arrayOfAttractions);
+}
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
     console.log("attractions", attractions);
     areaAttractions.attractionName(attractions);
-    // attractionsByTime(attractionTimes)
+    attractionTimes(attractions);
 });
 
-},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./timeOnLoad":5}],5:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./timeOnLoad":6}],6:[function(require,module,exports){
 "use strict";
-const moment = require("moment");
+let moment = require("moment");
 
 
 module.exports.attractionsByTime = (timeArray) => {
@@ -177,18 +195,23 @@ module.exports.attractionsByTime = (timeArray) => {
         const time = timeArray[i];
 
         let timeStringArray = time.split(":");
+
         console.log('timeStringArray',timeStringArray);
        
         console.log('addition test', +timeStringArray[0] + 12);
         console.log('typeOf', typeof(theHour));
         console.log('theHour',theHour);
 
-        if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 ) {
-            console.log('true');     
-        } else if (+timeStringArray[0] + 12 === theHour && +timeStringArray[0] < 22) {
+        if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("AM")) {
             console.log('true');
+            return true;
+        } else if (+timeStringArray[0] + 12 === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("PM")) {
+            console.log('true');
+            return true;
         } 
     }
+    console.log('you done fucked up');
+    return false;
         // loop through attractions.times and compare to theHour //
             // string.split to only compare theHour with the hour //
             // look through string to see if AM or PM is contained therin //
@@ -196,7 +219,7 @@ module.exports.attractionsByTime = (timeArray) => {
             // then compare theHour with the new hour //
 };
 
-},{"moment":7}],6:[function(require,module,exports){
+},{"moment":8}],7:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10451,7 +10474,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 //! moment.js
 //! version : 2.20.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -14988,4 +15011,4 @@ return hooks;
 
 })));
 
-},{}]},{},[4]);
+},{}]},{},[5]);
