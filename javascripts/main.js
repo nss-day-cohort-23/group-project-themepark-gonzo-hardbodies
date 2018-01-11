@@ -1,5 +1,5 @@
 "use strict";
-require(./factory);
+let controller = require(./contoller);
 
 // let factory = require("./factory");
 
