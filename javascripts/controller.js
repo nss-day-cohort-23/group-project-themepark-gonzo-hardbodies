@@ -1,11 +1,9 @@
 "use strict";
 let factory = require("./factory");
-let {attractionsByTime} = require("./timeOnLoad");
 
 factory.fetchAttractions()
     .then(attractions => {
         console.log("attractions", attractions);
-        attractionsByTime();
     });
 
 factory.fetchAreas()

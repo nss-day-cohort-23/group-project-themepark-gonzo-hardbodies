@@ -1,25 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
-let factory = require("./factory");
-let {attractionsByTime} = require("./timeOnLoad");
-
-factory.fetchAttractions()
-    .then(attractions => {
-        console.log("attractions", attractions);
-        attractionsByTime();
-    });
-
-factory.fetchAreas()
-    .then(areas => {
-        console.log("areas", areas);
-    });
-
-factory.fetchAttractionTypes()
-    .then(types => {
-        console.log("types", types);
-});
-},{"./factory":2,"./timeOnLoad":4}],2:[function(require,module,exports){
-"use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
 
@@ -69,12 +49,51 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":5}],3:[function(require,module,exports){
+},{"jquery":5}],2:[function(require,module,exports){
 "use strict";
 
-let controller = require("./controller");
+const $ = require("jquery");
 
-},{"./controller":1}],4:[function(require,module,exports){
+module.exports.formatData = (data) => {
+    let attractions = data[0];
+    let areas = data[1];
+    let types = data[2];
+
+    attractions.forEach(attraction => {
+        areas.forEach(area => {
+            if (attraction.area_id === area.id) {
+                attraction.area = area.name;
+            }
+        });
+        types.forEach(type => {
+            if (attraction.type_id === type.id) {
+                attraction.type = type.name;
+            }
+        });
+    });
+    return attractions;
+};
+},{"jquery":5}],3:[function(require,module,exports){
+"use strict";
+let factory = require("./factory");
+let formatter = require("./formatter");
+let { attractionsByTime } = require("./timeOnLoad");
+
+let promArr =[
+    factory.fetchAttractions(),
+    factory.fetchAreas(),
+    factory.fetchAttractionTypes()    
+];
+
+Promise.all(promArr)
+.then( (parkDataArr) => {
+    let areas = parkDataArr[1];
+    let attractions = formatter.formatData(parkDataArr);
+    console.log("attractions", attractions);
+    attractionsByTime();
+});
+
+},{"./factory":1,"./formatter":2,"./timeOnLoad":4}],4:[function(require,module,exports){
 "use strict";
 const moment = require("moment");
 
