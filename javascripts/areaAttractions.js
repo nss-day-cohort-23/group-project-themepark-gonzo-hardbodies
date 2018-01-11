@@ -9,6 +9,8 @@ function outputToDom(attractionArray){
     }
 }
 
+function displayDescrip(){};
+
 module.exports.attractionName = (attractionsData) => {
    
     //loop through attractions array
