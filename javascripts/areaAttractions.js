@@ -8,12 +8,13 @@ module.exports.attractionName = (attractionsData) => {
     attractionsData.forEach((attraction) => {
         console.log("attraction name",attraction.name, attraction.area_id);
     });
-
+    let $map = $("#map");
+    $map.click(()=>{
+        console.log("event target id",event.target.id);
+    });
 };
 
-    //loop through names 
-        //loop through ids
-        //
+
 
 //Given user wants to see the attraction list of an area
 
