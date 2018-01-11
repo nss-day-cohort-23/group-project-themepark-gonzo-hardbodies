@@ -9,7 +9,7 @@ function outputToDom(attractionArray){
     }
 }
 
-function displayDescrip(){};
+
 
 module.exports.attractionName = (attractionsData) => {
    

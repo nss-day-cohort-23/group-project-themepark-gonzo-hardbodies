@@ -10,6 +10,8 @@ function outputToDom(attractionArray){
     }
 }
 
+
+
 module.exports.attractionName = (attractionsData) => {
    
     //loop through attractions array
@@ -61,27 +63,27 @@ module.exports.attractionName = (attractionsData) => {
 // Then all attraction names assigned to that area should be listed in the left 30% of the screen
 // And the attraction type should be in parenthesis next to the name
 // And the name should be a hyperlink
-},{"jquery":5}],2:[function(require,module,exports){
-"use strict";
-let factory = require("./factory");
-let areaAttractions = require("./areaAttractions");
+},{"jquery":6}],2:[function(require,module,exports){
+// "use strict";
+// let factory = require("./factory");
+// let areaAttractions = require("./areaAttractions");
 
-factory.fetchAttractions()
-.then(attractions => {
-    console.log("attractions",attractions);
-    areaAttractions.attractionName(attractions);
-});
+// factory.fetchAttractions()
+// .then(attractions => {
+//     console.log("attractions",attractions);
+//     areaAttractions.attractionName(attractions);
+// });
 
-factory.fetchAreas()
-.then(areas => {
-    console.log("areas",areas);
-});
+// factory.fetchAreas()
+// .then(areas => {
+//     console.log("areas",areas);
+// });
 
-factory.fetchAttractionTypes()
-.then(types => {
-    console.log("types",types);
-});
-},{"./areaAttractions":1,"./factory":3}],3:[function(require,module,exports){
+// factory.fetchAttractionTypes()
+// .then(types => {
+//     console.log("types",types);
+// });
+},{}],3:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
@@ -132,27 +134,52 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":5}],4:[function(require,module,exports){
+},{"jquery":6}],4:[function(require,module,exports){
 "use strict";
+
+const $ = require("jquery");
+
+module.exports.formatData = (data) => {
+    let attractions = data[0];
+    let areas = data[1];
+    let types = data[2];
+
+    attractions.forEach(attraction => {
+        areas.forEach(area => {
+            if (attraction.area_id === area.id) {
+                attraction.area = area.name;
+            }
+        });
+        types.forEach(type => {
+            if (attraction.type_id === type.id) {
+                attraction.type = type.name;
+            }
+        });
+    });
+    return attractions;
+};
+},{"jquery":6}],5:[function(require,module,exports){
+"use strict";
+let factory = require("./factory");
+let formatter = require("./formatter");
 let controller = require("./controller");
+let areaAttractions = require("./areaAttractions");
 
-// let factory = require("./factory");
+let promArr =[
+    factory.fetchAttractions(),
+    factory.fetchAreas(),
+    factory.fetchAttractionTypes()    
+];
 
-// factory.fetchAttractions()
-// .then(attractions => {
-//     console.log("attractions",attractions);
-// });
+Promise.all(promArr)
+.then( (parkDataArr) => {
+    let areas = parkDataArr[1];
+    let attractions = formatter.formatData(parkDataArr);
+    console.log("attractions", attractions);
+    areaAttractions.attractionName(attractions);
+});
 
-// factory.fetchAreas()
-// .then(areas => {
-//     console.log("areas",areas);
-// });
-
-// factory.fetchAttractionTypes()
-// .then(types => {
-//     console.log("types",types);
-// });
-},{"./controller":2}],5:[function(require,module,exports){
+},{"./areaAttractions":1,"./controller":2,"./factory":3,"./formatter":4}],6:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10407,4 +10434,4 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}]},{},[4]);
+},{}]},{},[5]);
