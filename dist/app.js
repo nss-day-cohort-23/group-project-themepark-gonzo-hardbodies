@@ -63,27 +63,7 @@ module.exports.attractionName = (attractionsData) => {
 // Then all attraction names assigned to that area should be listed in the left 30% of the screen
 // And the attraction type should be in parenthesis next to the name
 // And the name should be a hyperlink
-},{"jquery":6}],2:[function(require,module,exports){
-// "use strict";
-// let factory = require("./factory");
-// let areaAttractions = require("./areaAttractions");
-
-// factory.fetchAttractions()
-// .then(attractions => {
-//     console.log("attractions",attractions);
-//     areaAttractions.attractionName(attractions);
-// });
-
-// factory.fetchAreas()
-// .then(areas => {
-//     console.log("areas",areas);
-// });
-
-// factory.fetchAttractionTypes()
-// .then(types => {
-//     console.log("types",types);
-// });
-},{}],3:[function(require,module,exports){
+},{"jquery":5}],2:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
@@ -134,7 +114,7 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":6}],4:[function(require,module,exports){
+},{"jquery":5}],3:[function(require,module,exports){
 "use strict";
 
 const $ = require("jquery");
@@ -158,11 +138,11 @@ module.exports.formatData = (data) => {
     });
     return attractions;
 };
-},{"jquery":6}],5:[function(require,module,exports){
+},{"jquery":5}],4:[function(require,module,exports){
 "use strict";
 let factory = require("./factory");
 let formatter = require("./formatter");
-let controller = require("./controller");
+
 let areaAttractions = require("./areaAttractions");
 
 let promArr =[
@@ -179,7 +159,7 @@ Promise.all(promArr)
     areaAttractions.attractionName(attractions);
 });
 
-},{"./areaAttractions":1,"./controller":2,"./factory":3,"./formatter":4}],6:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3}],5:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10434,4 +10414,4 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}]},{},[5]);
+},{}]},{},[4]);

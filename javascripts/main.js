@@ -1,7 +1,7 @@
 "use strict";
 let factory = require("./factory");
 let formatter = require("./formatter");
-let controller = require("./controller");
+
 let areaAttractions = require("./areaAttractions");
 
 let promArr =[
