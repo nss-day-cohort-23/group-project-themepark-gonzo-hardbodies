@@ -1,6 +1,49 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
+
+
+module.exports.attractionName = (attractionsData) => {
+    let $currentShows = $("#currentShows");
+    console.log("attraction data",attractionsData);
+    //loop through attractions array
+    attractionsData.forEach((attraction) => {
+        console.log("attraction name",attraction.name);
+    });
+    //loop through names 
+        //loop through ids
+        //
+};
+//Given user wants to see the attraction list of an area
+
+// When the user clicks on an area
+
+// Then all attraction names assigned to that area should be listed in the left 30% of the screen
+// And the attraction type should be in parenthesis next to the name
+// And the name should be a hyperlink
+},{"jquery":5}],2:[function(require,module,exports){
+"use strict";
+let factory = require("./factory");
+let areaAttractions = require("./areaAttractions");
+
+factory.fetchAttractions()
+.then(attractions => {
+    console.log("attractions",attractions);
+    areaAttractions.attractionName(attractions);
+});
+
+factory.fetchAreas()
+.then(areas => {
+    console.log("areas",areas);
+});
+
+factory.fetchAttractionTypes()
+.then(types => {
+    console.log("types",types);
+});
+},{"./areaAttractions":1,"./factory":3}],3:[function(require,module,exports){
+"use strict";
+const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
 
 module.exports.fetchAttractions = () => {
@@ -49,25 +92,27 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":3}],2:[function(require,module,exports){
+},{"jquery":5}],4:[function(require,module,exports){
 "use strict";
-let factory = require("./factory");
+let controller = require("./controller");
 
-factory.fetchAttractions()
-.then(attractions => {
-    console.log("attractions",attractions);
-});
+// let factory = require("./factory");
 
-factory.fetchAreas()
-.then(areas => {
-    console.log("areas",areas);
-});
+// factory.fetchAttractions()
+// .then(attractions => {
+//     console.log("attractions",attractions);
+// });
 
-factory.fetchAttractionTypes()
-.then(types => {
-    console.log("types",types);
-});
-},{"./factory":1}],3:[function(require,module,exports){
+// factory.fetchAreas()
+// .then(areas => {
+//     console.log("areas",areas);
+// });
+
+// factory.fetchAttractionTypes()
+// .then(types => {
+//     console.log("types",types);
+// });
+},{"./controller":2}],5:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10322,4 +10367,4 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}]},{},[2]);
+},{}]},{},[4]);

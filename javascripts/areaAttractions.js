@@ -1,5 +1,19 @@
 "use strict";
+const $ = require("jquery");
 
+
+module.exports.attractionName = (attractionsData) => {
+    let $currentShows = $("#currentShows");
+    console.log("attraction data",attractionsData);
+    //loop through attractions array
+    console.log()
+    attractionsData.forEach((attraction) => {
+        console.log("attraction name",attraction.name);
+    });
+    //loop through names 
+        //loop through ids
+        //
+};
 //Given user wants to see the attraction list of an area
 
 // When the user clicks on an area
