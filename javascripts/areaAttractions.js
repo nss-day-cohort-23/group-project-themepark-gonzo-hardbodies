@@ -1,22 +1,46 @@
 "use strict";
 const $ = require("jquery");
 
+function outputToDom(attractionArray){
+    let currentShow = document.getElementById("currentShows");
+    for (let i = 0; i < attractionArray.length; i++){
+        currentShow.innerHTML+= `<p><a>${attractionArray[i]}</a></p>`;
+    }
+}
 
 module.exports.attractionName = (attractionsData) => {
-    let $currentShows = $("#currentShows");
+   
     //loop through attractions array
-    attractionsData.forEach((attraction) => {
-        console.log("attraction name",attraction.name, attraction.area_id);
-        let $map = $("#map");
-        $map.click(()=>{
-        if(event.target.id === "mapArea1" && attraction.area_id === 1){
-            let $currentShows = $("#currentShows");
-            $currentShows.append(attraction.name);
-            console.log("attraction name & id",attraction.name, attraction.area_id);
-         }
-        });
+    let $map = $("#map");
+
+    $map.click(()=>{
+        console.log("click");
+    let attractionArray = [];
+    if (event.target.id != "mapAreaEmpty"){
+        attractionsData.forEach((attraction) => {
+            
+        
+                let currentShow = document.getElementById("currentShows");
+                
+                console.log("char", +event.target.id.charAt(event.target.id.length-1));
+                if (+event.target.id.charAt(event.target.id.length-1) === attraction.area_id){
+                
+                attractionArray.push(attraction.name);
+            
+
+        
+                }
+                
+            });
+
+            console.log("attraction array",attractionArray);
+            outputToDom(attractionArray);
+        }   
     });
+
+
 };
+
 //     let $map = $("#map");
 //     $map.click(()=>{
 //         if(event.target.id === "mapArea1" && attraction.area_id === 1){
