@@ -8,12 +8,22 @@ module.exports.attractionName = (attractionsData) => {
     //loop through attractions array
     attractionsData.forEach((attraction) => {
         console.log("attraction name",attraction.name, attraction.area_id);
-    });
-    let $map = $("#map");
-    $map.click(()=>{
-        console.log("event target id",event.target.id);
+        let $map = $("#map");
+        $map.click(()=>{
+        if(event.target.id === "mapArea1" && attraction.area_id === 1){
+            console.log("attraction name & id",attraction.name, attraction.area_id);
+         }
+        });
     });
 };
+//     let $map = $("#map");
+//     $map.click(()=>{
+//         if(event.target.id === "mapArea1" && attraction.area_id === 1){
+//             console.log("mapArea1");
+        
+//         }
+//     });
+// };
 
 
 
