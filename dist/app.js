@@ -1,6 +1,71 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
+
+function outputToDom(attractionArray){
+    let currentShow = document.getElementById("currentShows");
+    currentShow.innerHTML="";
+    for (let i = 0; i < attractionArray.length; i++){
+        currentShow.innerHTML+= `<p><a href="#">${attractionArray[i]}</a></p>`;
+    }
+}
+
+
+
+module.exports.attractionName = (attractionsData) => {
+   
+    //loop through attractions array
+    let $map = $("#map");
+
+    $map.click(()=>{
+        console.log("click");
+    let attractionArray = [];
+    if (event.target.id != "mapAreaEmpty"){
+        attractionsData.forEach((attraction) => {
+            
+        
+                let currentShow = document.getElementById("currentShows");
+                
+                console.log("char", +event.target.id.charAt(event.target.id.length-1));
+                if (+event.target.id.charAt(event.target.id.length-1) === attraction.area_id){
+                
+                attractionArray.push(attraction.name);
+            
+
+        
+                }
+                
+            });
+
+            console.log("attraction array",attractionArray);
+            outputToDom(attractionArray);
+        }   
+    });
+
+
+};
+
+//     let $map = $("#map");
+//     $map.click(()=>{
+//         if(event.target.id === "mapArea1" && attraction.area_id === 1){
+//             console.log("mapArea1");
+        
+//         }
+//     });
+// };
+
+
+
+//Given user wants to see the attraction list of an area
+
+// When the user clicks on an area
+
+// Then all attraction names assigned to that area should be listed in the left 30% of the screen
+// And the attraction type should be in parenthesis next to the name
+// And the name should be a hyperlink
+},{"jquery":6}],2:[function(require,module,exports){
+"use strict";
+const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
 
 module.exports.fetchAttractions = () => {
@@ -49,7 +114,7 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":5}],2:[function(require,module,exports){
+},{"jquery":6}],3:[function(require,module,exports){
 "use strict";
 
 const $ = require("jquery");
@@ -73,11 +138,13 @@ module.exports.formatData = (data) => {
     });
     return attractions;
 };
-},{"jquery":5}],3:[function(require,module,exports){
+},{"jquery":6}],4:[function(require,module,exports){
 "use strict";
 let factory = require("./factory");
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
+
+let areaAttractions = require("./areaAttractions");
 
 let promArr =[
     factory.fetchAttractions(),
@@ -85,15 +152,18 @@ let promArr =[
     factory.fetchAttractionTypes()    
 ];
 
+
+
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
     console.log("attractions", attractions);
-    attractionsByTime();
+    areaAttractions.attractionName(attractions);
+    // attractionsByTime(attractionTimes)
 });
 
-},{"./factory":1,"./formatter":2,"./timeOnLoad":4}],4:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./timeOnLoad":5}],5:[function(require,module,exports){
 "use strict";
 const moment = require("moment");
 
@@ -109,10 +179,10 @@ module.exports.attractionsByTime = (timeArray) => {
         let timeStringArray = time.split(":");
         console.log('timeStringArray',timeStringArray);
        
-        console.log('addition test', parseInt(timeStringArray[0]) + 12);
+        console.log('addition test', +timeStringArray[0] + 12);
         console.log('typeOf', typeof(theHour));
         console.log('theHour',theHour);
-        
+
         if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 ) {
             console.log('true');     
         } else if (+timeStringArray[0] + 12 === theHour && +timeStringArray[0] < 22) {
@@ -126,7 +196,7 @@ module.exports.attractionsByTime = (timeArray) => {
             // then compare theHour with the new hour //
 };
 
-},{"moment":6}],5:[function(require,module,exports){
+},{"moment":7}],6:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10381,7 +10451,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 //! moment.js
 //! version : 2.20.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -14918,4 +14988,4 @@ return hooks;
 
 })));
 
-},{}]},{},[3]);
+},{}]},{},[4]);

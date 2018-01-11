@@ -13,10 +13,10 @@ module.exports.attractionsByTime = (timeArray) => {
         let timeStringArray = time.split(":");
         console.log('timeStringArray',timeStringArray);
        
-        console.log('addition test', parseInt(timeStringArray[0]) + 12);
+        console.log('addition test', +timeStringArray[0] + 12);
         console.log('typeOf', typeof(theHour));
         console.log('theHour',theHour);
-        
+
         if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 ) {
             console.log('true');     
         } else if (+timeStringArray[0] + 12 === theHour && +timeStringArray[0] < 22) {
