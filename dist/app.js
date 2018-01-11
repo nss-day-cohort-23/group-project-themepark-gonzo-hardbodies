@@ -11,6 +11,8 @@ module.exports.attractionName = (attractionsData) => {
         let $map = $("#map");
         $map.click(()=>{
         if(event.target.id === "mapArea1" && attraction.area_id === 1){
+            let $currentShows = $("#currentShows");
+            $currentShows.append(attraction.name);
             console.log("attraction name & id",attraction.name, attraction.area_id);
          }
         });
