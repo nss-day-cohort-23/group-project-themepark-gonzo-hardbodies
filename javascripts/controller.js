@@ -5,7 +5,7 @@ let {attractionsByTime} = require("./timeOnLoad");
 factory.fetchAttractions()
     .then(attractions => {
         console.log("attractions", attractions);
-        attractionsByTime(timeArray.attractions.times);
+        attractionsByTime();
     });
 
 factory.fetchAreas()
