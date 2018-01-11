@@ -49,25 +49,48 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":3}],2:[function(require,module,exports){
+},{"jquery":4}],2:[function(require,module,exports){
+"use strict";
+
+const $ = require("jquery");
+
+module.exports.formatData = (data) => {
+    let attractions = data[0];
+    let areas = data[1];
+    let types = data[2];
+
+    attractions.forEach(attraction => {
+        areas.forEach(area => {
+            if (attraction.area_id === area.id) {
+                attraction.area = area.name;
+            }
+        });
+        types.forEach(type => {
+            if (attraction.type_id === type.id) {
+                attraction.type = type.name;
+            }
+        });
+    });
+    return attractions;
+};
+},{"jquery":4}],3:[function(require,module,exports){
 "use strict";
 let factory = require("./factory");
+let formatter = require("./formatter");
 
-factory.fetchAttractions()
-.then(attractions => {
-    console.log("attractions",attractions);
-});
+let promArr =[
+    factory.fetchAttractions(),
+    factory.fetchAreas(),
+    factory.fetchAttractionTypes()    
+];
 
-factory.fetchAreas()
-.then(areas => {
-    console.log("areas",areas);
+Promise.all(promArr)
+.then( (parkDataArr) => {
+    let areas = parkDataArr[1];
+    let attractions = formatter.formatData(parkDataArr);
+    console.log("attractions", attractions);
 });
-
-factory.fetchAttractionTypes()
-.then(types => {
-    console.log("types",types);
-});
-},{"./factory":1}],3:[function(require,module,exports){
+},{"./factory":1,"./formatter":2}],4:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10322,4 +10345,4 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}]},{},[2]);
+},{}]},{},[3]);

@@ -1,17 +1,16 @@
 "use strict";
 let factory = require("./factory");
+let formatter = require("./formatter");
 
-factory.fetchAttractions()
-.then(attractions => {
-    console.log("attractions",attractions);
-});
+let promArr =[
+    factory.fetchAttractions(),
+    factory.fetchAreas(),
+    factory.fetchAttractionTypes()    
+];
 
-factory.fetchAreas()
-.then(areas => {
-    console.log("areas",areas);
-});
-
-factory.fetchAttractionTypes()
-.then(types => {
-    console.log("types",types);
+Promise.all(promArr)
+.then( (parkDataArr) => {
+    let areas = parkDataArr[1];
+    let attractions = formatter.formatData(parkDataArr);
+    console.log("attractions", attractions);
 });
