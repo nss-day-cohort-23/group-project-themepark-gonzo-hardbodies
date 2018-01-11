@@ -1,5 +1,7 @@
 "use strict";
-let factory = require("./factory");
+require(./factory);
+
+// let factory = require("./factory");
 
 // factory.fetchAttractions()
 // .then(attractions => {
