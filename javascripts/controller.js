@@ -1,5 +1,6 @@
 "use strict";
 let factory = require("./factory");
+let searchbar = require('./searchbar');
 
 factory.fetchAttractions()
     .then(attractions => {
