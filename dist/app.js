@@ -1,6 +1,71 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
+
+function outputToDom(attractionArray){
+    let currentShow = document.getElementById("currentShows");
+    currentShow.innerHTML="";
+    for (let i = 0; i < attractionArray.length; i++){
+        currentShow.innerHTML+= `<p><a href="#">${attractionArray[i]}</a></p>`;
+    }
+}
+
+
+
+module.exports.attractionName = (attractionsData) => {
+   
+    //loop through attractions array
+    let $map = $("#map");
+
+    $map.click(()=>{
+        console.log("click");
+    let attractionArray = [];
+    if (event.target.id != "mapAreaEmpty"){
+        attractionsData.forEach((attraction) => {
+            
+        
+                let currentShow = document.getElementById("currentShows");
+                
+                console.log("char", +event.target.id.charAt(event.target.id.length-1));
+                if (+event.target.id.charAt(event.target.id.length-1) === attraction.area_id){
+                
+                attractionArray.push(attraction.name);
+            
+
+        
+                }
+                
+            });
+
+            console.log("attraction array",attractionArray);
+            outputToDom(attractionArray);
+        }   
+    });
+
+
+};
+
+//     let $map = $("#map");
+//     $map.click(()=>{
+//         if(event.target.id === "mapArea1" && attraction.area_id === 1){
+//             console.log("mapArea1");
+        
+//         }
+//     });
+// };
+
+
+
+//Given user wants to see the attraction list of an area
+
+// When the user clicks on an area
+
+// Then all attraction names assigned to that area should be listed in the left 30% of the screen
+// And the attraction type should be in parenthesis next to the name
+// And the name should be a hyperlink
+},{"jquery":7}],2:[function(require,module,exports){
+"use strict";
+const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
 
 module.exports.fetchAttractions = () => {
@@ -49,10 +114,35 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":5}],2:[function(require,module,exports){
+},{"jquery":7}],3:[function(require,module,exports){
+"use strict";
+
+const $ = require("jquery");
+
+module.exports.formatData = (data) => {
+    let attractions = data[0];
+    let areas = data[1];
+    let types = data[2];
+
+    attractions.forEach(attraction => {
+        areas.forEach(area => {
+            if (attraction.area_id === area.id) {
+                attraction.area = area.name;
+            }
+        });
+        types.forEach(type => {
+            if (attraction.type_id === type.id) {
+                attraction.type = type.name;
+            }
+        });
+    });
+    return attractions;
+};
+},{"jquery":7}],4:[function(require,module,exports){
 "use strict";
 
 let factory = require("./factory");
+
 let searchbar = require('./searchbar');
 let searchbarView = require('./searchbarView');
 
@@ -63,10 +153,16 @@ factory.fetchAttractions()
     console.log("attractions", attractions);
 });
 
-factory.fetchAreas()
-.then(areas => {
-    console.log("areas",areas);
-});
+let formatter = require("./formatter");
+
+let areaAttractions = require("./areaAttractions");
+
+
+let promArr =[
+    factory.fetchAttractions(),
+    factory.fetchAreas(),
+    factory.fetchAttractionTypes()    
+];
 
 factory.fetchAttractionTypes()
 .then(types => {
@@ -74,7 +170,7 @@ factory.fetchAttractionTypes()
 });
 
 
-},{"./factory":1,"./searchbar":3,"./searchbarView":4}],3:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./searchbar":5,"./searchbarView":6}],5:[function(require,module,exports){
 'use strict';
 
 //get attraction's area id
@@ -94,7 +190,7 @@ module.exports.getAreaOfSearchedAttraction = (attractions) => {
 
 
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 let searchbar = require('./searchbar');
@@ -134,7 +230,7 @@ module.exports.pressingEnter = (attractions) => {
     });
 };
 
-},{"./searchbar":3}],5:[function(require,module,exports){
+},{"./searchbar":5}],7:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10389,4 +10485,4 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}]},{},[2]);
+},{}]},{},[4]);

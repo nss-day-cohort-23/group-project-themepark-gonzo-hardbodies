@@ -4,7 +4,7 @@
 //list attraction info
 //highlight in map area that attraction is in
 
-module.exports.getAreaOfSearchedAttraction = (attractions) => {
+module.exports.getAreaAndNameOfSearchedAttraction = (attractions) => {
     let attractionsAreaIdArray = [];
     attractions.forEach(attraction => {
         attractionsAreaIdArray.push(attraction.name);
