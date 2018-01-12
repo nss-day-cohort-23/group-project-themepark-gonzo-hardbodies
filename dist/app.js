@@ -140,13 +140,16 @@ module.exports.outputToDom= (attractionArray) =>{
     console.log(attractionArray, "attraction array what value do I need for descrip");
     currentShow.innerHTML = "";
     for (let i = 0; i < attractionArray.length; i++) {
-        currentShow.innerHTML += `<h4><a href="#">${attractionArray[i].name}</a><h4><p hidden>${attractionArray[i].description}</p>`;
+        currentShow.innerHTML += `<div id=${i}><h4 id=${i}><a href="#">${attractionArray[i].name}<li style="display:none;">${attractionArray[i].description}</li></a><h4></div>`;
     }
-    $(document).delegate("h4","click", function(){
-        $("p:hidden").show();
-    });
-   
+
+    $(document).on("click",event.target, function(){
+        console.log("et", event.target);
+        $(event.target).children().first("li:hidden").toggle();
+        }
+    );   
 };
+
 
 
 
