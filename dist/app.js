@@ -147,11 +147,11 @@ let searchbar = require('./searchbar');
 let searchbarView = require('./searchbarView');
 
 
-factory.fetchAttractions()
-.then(attractions => {
-    searchbarView.pressingEnter(attractions);
-    console.log("attractions", attractions);
-});
+// factory.fetchAttractions()
+// .then(attractions => {
+//     searchbarView.pressingEnter(attractions);
+//     console.log("attractions", attractions);
+// });
 
 let formatter = require("./formatter");
 
@@ -164,9 +164,13 @@ let promArr =[
     factory.fetchAttractionTypes()    
 ];
 
-factory.fetchAttractionTypes()
-.then(types => {
-    console.log("types",types);
+Promise.all(promArr)
+.then( (parkDataArr) => {
+    let areas = parkDataArr[1];
+    let attractions = formatter.formatData(parkDataArr);
+    console.log("attractions", attractions);
+    areaAttractions.attractionName(attractions);
+    searchbarView.pressingEnter(attractions);
 });
 
 
@@ -177,14 +181,17 @@ factory.fetchAttractionTypes()
 //list attraction info
 //highlight in map area that attraction is in
 
-module.exports.getAreaOfSearchedAttraction = (attractions) => {
+module.exports.getAreaNameAndDescriptionOfSearchedAttraction = (attractions) => {
     let attractionsAreaIdArray = [];
     attractions.forEach(attraction => {
         attractionsAreaIdArray.push(attraction.name);
         attractionsAreaIdArray.push(attraction.area_id);
+        // NEW WORK
+        attractionsAreaIdArray.push(attraction.description);
     });
     return attractionsAreaIdArray;
 };
+
 
 
 
@@ -195,26 +202,25 @@ module.exports.getAreaOfSearchedAttraction = (attractions) => {
 
 let searchbar = require('./searchbar');
 
-
-
-//Walt Disney's Enchanted Tiki Room
-//want name to equal area id - USE REGULAR EXPRESSIONS;
-//want area id to equal value in map area, then highlight the value
+//want name to equal area id - USE REGULAR EXPRESSIONS - did it but not that way;
+//want bordered area to be unbordered when new attraction is searched;
 //if user puts in pirates, it shows all the attractions with pirates in it;
 
-let highlightAreaofSearchedAttraction = (attractions) => {
-    let attractionsAreaIdAndName = searchbar.getAreaOfSearchedAttraction(attractions);
-    console.log("attractions area Id", attractionsAreaIdAndName);
+let mapSection;
+
+let highlightAreaofSearchedAttractionAndOutputInfo = (attractions) => {
+    let attractionsAreaIdNameAndDescription = searchbar.getAreaNameAndDescriptionOfSearchedAttraction(attractions);
+    console.log("attraction area ids, name, and description", attractionsAreaIdNameAndDescription);
     let userText = document.getElementById("userInput");
-    for (let i=0; i<attractionsAreaIdAndName.length; i++) {
-        if (userText.value === attractionsAreaIdAndName[i]) {
-            console.log(attractionsAreaIdAndName[i]);
-            console.log(attractionsAreaIdAndName[i +1]);
-            let correspondingId = attractionsAreaIdAndName[i + 1];
-            console.log("corresponding id", correspondingId);
+    for (let i=0; i<attractionsAreaIdNameAndDescription.length; i++) {
+        if (userText.value === attractionsAreaIdNameAndDescription[i]) {
+            let correspondingId = attractionsAreaIdNameAndDescription[i + 1];
             let mapSection = document.getElementById(`mapArea${correspondingId}`);
             mapSection.style.border = "2px solid black";
-            console.log("map section", mapSection);
+            let output = document.getElementById("currentShows");
+            output.innerHTML = `
+            ${attractionsAreaIdNameAndDescription[i]}: ${attractionsAreaIdNameAndDescription[i + 2]}
+            `;
         }
     }
 };
@@ -222,9 +228,11 @@ let highlightAreaofSearchedAttraction = (attractions) => {
 module.exports.pressingEnter = (attractions) => {
     let userText = document.getElementById("userInput");
     userText.addEventListener('keypress', function (e) {
-        var key = e.keyCode;
+    var key = e.keyCode;
         if (key === 13) {
-            highlightAreaofSearchedAttraction(attractions);
+            // console.log("mapSection:", mapSection);
+            // mapSection.style.border = "none";
+            highlightAreaofSearchedAttractionAndOutputInfo(attractions);
             userText.value = "";
         }
     });

@@ -6,11 +6,11 @@ let searchbar = require('./searchbar');
 let searchbarView = require('./searchbarView');
 
 
-factory.fetchAttractions()
-.then(attractions => {
-    searchbarView.pressingEnter(attractions);
-    console.log("attractions", attractions);
-});
+// factory.fetchAttractions()
+// .then(attractions => {
+//     searchbarView.pressingEnter(attractions);
+//     console.log("attractions", attractions);
+// });
 
 let formatter = require("./formatter");
 
@@ -23,8 +23,12 @@ let promArr =[
     factory.fetchAttractionTypes()    
 ];
 
-factory.fetchAttractionTypes()
-.then(types => {
-    console.log("types",types);
+Promise.all(promArr)
+.then( (parkDataArr) => {
+    let areas = parkDataArr[1];
+    let attractions = formatter.formatData(parkDataArr);
+    console.log("attractions", attractions);
+    areaAttractions.attractionName(attractions);
+    searchbarView.pressingEnter(attractions);
 });
 
