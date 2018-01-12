@@ -8,6 +8,7 @@ let searchbarView = require('./searchbarView');
 factory.fetchAttractions()
 .then(attractions => {
     searchbarView.pressingEnter(attractions);
+    console.log("attractions", attractions);
 });
 
 factory.fetchAreas()

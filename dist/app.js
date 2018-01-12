@@ -60,6 +60,7 @@ let searchbarView = require('./searchbarView');
 factory.fetchAttractions()
 .then(attractions => {
     searchbarView.pressingEnter(attractions);
+    console.log("attractions", attractions);
 });
 
 factory.fetchAreas()
@@ -83,33 +84,12 @@ factory.fetchAttractionTypes()
 module.exports.getAreaOfSearchedAttraction = (attractions) => {
     let attractionsAreaIdArray = [];
     attractions.forEach(attraction => {
+        attractionsAreaIdArray.push(attraction.name);
         attractionsAreaIdArray.push(attraction.area_id);
     });
     return attractionsAreaIdArray;
 };
 
-module.exports.getNameofSearchedAttraction = (attractions) => {
-    let attractionsNameArray = [];
-    attractions.forEach(attraction => {
-        attractionsNameArray.push(attraction.name);
-    });
-    return attractionsNameArray;
-};
-
-
-// module.exports.pressingEnter = (attractions) => {
-//     let userText = document.getElementById("userInput");
-//     userText.addEventListener('keypress', function (e) {
-//         var key = e.keyCode;
-//         if (key === 13) {
-//             console.log("attractions in press enter", attractions);
-//             getAreaOfSearchedAttraction(attractions);
-//             let attractionsAreaId = getAreaOfSearchedAttraction(attractions);
-//             console.log("attractionsAreaId", attractionsAreaId);
-//             return attractionsAreaId;
-//     }
-//     });
-// };
 
 
 
@@ -119,50 +99,28 @@ module.exports.getNameofSearchedAttraction = (attractions) => {
 
 let searchbar = require('./searchbar');
 
-let area1 = "Main Street U.S.A.";
-let area2 = "Adventureland";
-let area3 = "Frontierland";
-let area4 = "Liberty Square";
-let area5 = "Fantasyland";
-let area6 = "Tomorrowland";
-let area7 = "Cinderlla Castle";
-// let area8 = ;
-// let area9 = ;
+
 
 //Walt Disney's Enchanted Tiki Room
-//want name to equal area id
+//want name to equal area id - USE REGULAR EXPRESSIONS;
 //want area id to equal value in map area, then highlight the value
+//if user puts in pirates, it shows all the attractions with pirates in it;
 
 let highlightAreaofSearchedAttraction = (attractions) => {
-    let attractionsAreaId = searchbar.getAreaOfSearchedAttraction(attractions);
-    let attractionsName = searchbar.getNameofSearchedAttraction(attractions);
-    console.log("attractions area Id in searchbarView", attractionsAreaId);
-    console.log("attractions name", attractionsName);
+    let attractionsAreaIdAndName = searchbar.getAreaOfSearchedAttraction(attractions);
+    console.log("attractions area Id", attractionsAreaIdAndName);
     let userText = document.getElementById("userInput");
-    console.log("user text:", userText.value);
-    attractionsName.forEach(attraction => {
-        if (attraction === userText.value) {
-            console.log("name:", attraction);
-            attraction = attractionsAreaId;
-            console.log(attractionsAreaId);
-        }
-    });
-    attractionsAreaId.forEach((attraction) => { 
-        if (attraction === +userText.value) {
-            let mapSection = document.getElementById(`mapArea${attraction}`);
-            mapSection.style.hover();
-            // mapSection;
-            // mapSection.forEach(section => {
-            //     let mapSectionValue = section.value;
-            //     console.log("map section value", mapSectionValue);
-            // });
+    for (let i=0; i<attractionsAreaIdAndName.length; i++) {
+        if (userText.value === attractionsAreaIdAndName[i]) {
+            console.log(attractionsAreaIdAndName[i]);
+            console.log(attractionsAreaIdAndName[i +1]);
+            let correspondingId = attractionsAreaIdAndName[i + 1];
+            console.log("corresponding id", correspondingId);
+            let mapSection = document.getElementById(`mapArea${correspondingId}`);
+            mapSection.style.border = "2px solid black";
             console.log("map section", mapSection);
-            // if (attraction === )
-
-            console.log("attraction", attraction);
         }
-    });
-    // return attractionsAreaId;
+    }
 };
 
 module.exports.pressingEnter = (attractions) => {
@@ -171,9 +129,11 @@ module.exports.pressingEnter = (attractions) => {
         var key = e.keyCode;
         if (key === 13) {
             highlightAreaofSearchedAttraction(attractions);
+            userText.value = "";
         }
     });
 };
+
 },{"./searchbar":3}],5:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
