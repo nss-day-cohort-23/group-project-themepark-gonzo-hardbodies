@@ -1,13 +1,6 @@
 "use strict";
 const $ = require("jquery");
-
-function outputToDom(attractionArray){
-    let currentShow = document.getElementById("currentShows");
-    currentShow.innerHTML="";
-    for (let i = 0; i < attractionArray.length; i++){
-        currentShow.innerHTML+= `<p><a href="#">${attractionArray[i]}</a></p>`;
-    }
-}
+const {outputToDom} = require('./interactDom');
 
 
 
@@ -28,7 +21,7 @@ module.exports.attractionName = (attractionsData) => {
                 console.log("char", +event.target.id.charAt(event.target.id.length-1));
                 if (+event.target.id.charAt(event.target.id.length-1) === attraction.area_id){
                 
-                attractionArray.push(attraction.name);
+                attractionArray.push(attraction);
             
 
         
