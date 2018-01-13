@@ -21,7 +21,7 @@ module.exports.outputToDom= (attractionArray) =>{
         }
     )
     .on("click",event.target,function(){
-        $(event.target).parent().parent().prev().first("p:hidden").hide();
+        $(event.target).parent().parent().prev().first("p:hidden").css('visibility','hidden');
     });
 
 };
