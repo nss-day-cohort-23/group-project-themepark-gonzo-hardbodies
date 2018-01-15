@@ -165,10 +165,7 @@ function getTimeString (timeArray){
     return timeString;
 }
 
-
-
-},{"./timeOnLoad":8,"jquery":9}],5:[function(require,module,exports){
-"use strict";
+//footer
 
 
 const d = new Date();
@@ -180,14 +177,13 @@ const year = d.getFullYear();
 $("#copyright").html(`&copy ${day}/${month}/${year}`);
 
 
-},{"jquery":8}],5:[function(require,module,exports){
+},{"./timeOnLoad":7,"jquery":8}],5:[function(require,module,exports){
 "use strict";
-
 
 let factory = require("./factory");
 
-
 let searchbarView = require('./searchbarView');
+
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
 let { outputToDom } = require('./interactDom');
