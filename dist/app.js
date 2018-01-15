@@ -5,8 +5,8 @@ const {outputToDom} = require('./interactDom');
 
 
 
-module.exports.attractionName = (attractionsData) => {
-   
+module.exports.attractionName = (attractionsData, areas) => {
+    
     //loop through attractions array
     let $map = $("#map");
 
@@ -31,7 +31,7 @@ module.exports.attractionName = (attractionsData) => {
             });
 
             console.log("attraction array",attractionArray);
-            outputToDom(attractionArray);
+            outputToDom(attractionArray, areas);
         }   
     });
 
@@ -133,41 +133,42 @@ module.exports.formatData = (data) => {
 };
 },{"jquery":8}],4:[function(require,module,exports){
 'use strict';
+const { attractionArea } = require("./timeOnLoad");
+
 let $ = require("jquery");
 
-module.exports.outputToDom= (attractionArray) =>{
+module.exports.outputToDom= (attractionArray, areas) =>{
     let currentShow = document.getElementById("currentShows");
     currentShow.innerHTML = "";
     for (let i = 0; i < attractionArray.length; i++) {
+        let attractionAreaVar = attractionArea(areas, attractionArray[i]);
         if (attractionArray[i].hasOwnProperty('times')){
-            console.log("help");
-            currentShow.innerHTML += `<div><h4><a class="link" href="#">${attractionArray[i].name}</a><p class="descrip>${attractionArray[i].description}${attractionArray[i].times}</p><h4></div>`;
+            let gotTimeString = getTimeString(attractionArray[i].times);
+            currentShow.innerHTML += `<div><h4><a href="#">${attractionArray[i].name} (${attractionAreaVar})</a><p>${gotTimeString}</p><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
         } else {
-            currentShow.innerHTML += `<div><h4><a href="#">${attractionArray[i].name}</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
-
+            currentShow.innerHTML += `<div><h4><a href="#">${attractionArray[i].name} (${attractionAreaVar})</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;  
         }
     }
-
     $(document).on("click",$(".link"), function(){
-        console.log("you clicked on link");
-        console.log("et", event.target);
-        // $(event.target).next().first("p:hidden").css('visibility','visible');
-        // console.log("first event.next", $(event.target).next());
-        // $(".descrip").hide();
         $(".descrip").hide();
         $(event.target).siblings(".descrip").toggle();
-        
+        event.preventDefault();
         }
     );
-    // .on("click",event.target,function(){
-    //     $(event.target).parent().parent().prev().first("p:hidden").css('visibility','hidden');
-    // });
-
 };
 
+function getTimeString (timeArray){
+    let timeString = '';
+    for (let i = 0; i < timeArray.length; i++) {
+    timeString += `${timeArray[i]} `;           
+    }
+    return timeString;
+}
 
 
-//footer
+
+},{"./timeOnLoad":8,"jquery":9}],5:[function(require,module,exports){
+"use strict";
 
 
 const d = new Date();
@@ -182,7 +183,9 @@ $("#copyright").html(`&copy ${day}/${month}/${year}`);
 },{"jquery":8}],5:[function(require,module,exports){
 "use strict";
 
+
 let factory = require("./factory");
+
 
 let searchbarView = require('./searchbarView');
 let formatter = require("./formatter");
@@ -199,7 +202,7 @@ let promArr =[
     factory.fetchAttractionTypes()    
 ];
 
-function attractionTimes(attractions) {
+function attractionTimes(attractions, areas) {
     let arrayOfAttractions = [];
     attractions.forEach(attraction => {
         if (!attraction.times) {
@@ -209,17 +212,20 @@ function attractionTimes(attractions) {
                arrayOfAttractions.push(attraction);
            }
         }
-
     });
-    outputToDom(arrayOfAttractions);
+
+    outputToDom(arrayOfAttractions, areas);
+
 }
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
-    areaAttractions.attractionName(attractions);
+
+    areaAttractions.attractionName(attractions, areas);
+
     searchbarView.pressingEnter(attractions);
-    attractionTimes(attractions);
+    attractionTimes(attractions, areas);
 });
 
 
@@ -282,36 +288,25 @@ let moment = require("moment");
 
 
 module.exports.attractionsByTime = (timeArray) => {
-    console.log("It's working!");
     let theHour = +moment().format("H");
-    console.log('the hour',theHour);
-
     for (let i = 0; i < timeArray.length; i++) {
         const time = timeArray[i];
-
         let timeStringArray = time.split(":");
-
-        console.log('timeStringArray',timeStringArray);
-       
-        console.log('addition test', +timeStringArray[0] + 12);
-        console.log('typeOf', typeof(theHour));
-        console.log('theHour',theHour);
-
-        if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("AM")) {
-            console.log('true');
+        if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("AM")) {           
             return true;
-        } else if (+timeStringArray[0] + 12 === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("PM")) {
-            console.log('true');
+        } else if (+timeStringArray[0] + 12 === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("PM")) {      
             return true;
         } 
     }
-    console.log('you done fucked up');
     return false;
-        // loop through attractions.times and compare to theHour //
-            // string.split to only compare theHour with the hour //
-            // look through string to see if AM or PM is contained therin //
-            // if PM is included, add 12 to the number //
-            // then compare theHour with the new hour //
+};
+
+module.exports.attractionArea = (areas, attraction) => {
+    for (let i = 0; i < areas.length; i++) {
+        if (areas[i].id === attraction.area_id) {
+            return areas[i].name;
+        }        
+    }
 };
 
 },{"moment":9}],8:[function(require,module,exports){

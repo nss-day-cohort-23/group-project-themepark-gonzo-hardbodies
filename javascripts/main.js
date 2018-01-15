@@ -3,6 +3,7 @@
 let factory = require("./factory");
 
 let searchbarView = require('./searchbarView');
+
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
 let { outputToDom } = require('./interactDom');
@@ -17,7 +18,7 @@ let promArr =[
     factory.fetchAttractionTypes()    
 ];
 
-function attractionTimes(attractions) {
+function attractionTimes(attractions, areas) {
     let arrayOfAttractions = [];
     attractions.forEach(attraction => {
         if (!attraction.times) {
@@ -27,16 +28,19 @@ function attractionTimes(attractions) {
                arrayOfAttractions.push(attraction);
            }
         }
-
     });
-    outputToDom(arrayOfAttractions);
+
+    outputToDom(arrayOfAttractions, areas);
+
 }
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
-    areaAttractions.attractionName(attractions);
+
+    areaAttractions.attractionName(attractions, areas);
+
     searchbarView.pressingEnter(attractions);
-    attractionTimes(attractions);
+    attractionTimes(attractions, areas);
 });
 

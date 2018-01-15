@@ -1,37 +1,35 @@
 'use strict';
+const { attractionArea } = require("./timeOnLoad");
+
 let $ = require("jquery");
 
-module.exports.outputToDom= (attractionArray) =>{
+module.exports.outputToDom= (attractionArray, areas) =>{
     let currentShow = document.getElementById("currentShows");
     currentShow.innerHTML = "";
     for (let i = 0; i < attractionArray.length; i++) {
+        let attractionAreaVar = attractionArea(areas, attractionArray[i]);
         if (attractionArray[i].hasOwnProperty('times')){
-            console.log("help");
-            currentShow.innerHTML += `<div><h4><a class="link" href="#">${attractionArray[i].name}</a><p class="descrip>${attractionArray[i].description}${attractionArray[i].times}</p><h4></div>`;
+            let gotTimeString = getTimeString(attractionArray[i].times);
+            currentShow.innerHTML += `<div><h4><a href="#">${attractionArray[i].name} (${attractionAreaVar})</a><p>${gotTimeString}</p><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
         } else {
-            currentShow.innerHTML += `<div><h4><a href="#">${attractionArray[i].name}</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
-
+            currentShow.innerHTML += `<div><h4><a href="#">${attractionArray[i].name} (${attractionAreaVar})</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;  
         }
     }
-
     $(document).on("click",$(".link"), function(){
-        console.log("you clicked on link");
-        console.log("et", event.target);
-        // $(event.target).next().first("p:hidden").css('visibility','visible');
-        // console.log("first event.next", $(event.target).next());
-        // $(".descrip").hide();
         $(".descrip").hide();
         $(event.target).siblings(".descrip").toggle();
-        
+        event.preventDefault();
         }
     );
-    // .on("click",event.target,function(){
-    //     $(event.target).parent().parent().prev().first("p:hidden").css('visibility','hidden');
-    // });
-
 };
 
-
+function getTimeString (timeArray){
+    let timeString = '';
+    for (let i = 0; i < timeArray.length; i++) {
+    timeString += `${timeArray[i]} `;           
+    }
+    return timeString;
+}
 
 //footer
 

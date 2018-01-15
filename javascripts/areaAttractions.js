@@ -4,8 +4,8 @@ const {outputToDom} = require('./interactDom');
 
 
 
-module.exports.attractionName = (attractionsData) => {
-   
+module.exports.attractionName = (attractionsData, areas) => {
+    
     //loop through attractions array
     let $map = $("#map");
 
@@ -30,7 +30,7 @@ module.exports.attractionName = (attractionsData) => {
             });
 
             console.log("attraction array",attractionArray);
-            outputToDom(attractionArray);
+            outputToDom(attractionArray, areas);
         }   
     });
 
