@@ -56,7 +56,7 @@ module.exports.attractionName = (attractionsData, areas) => {
 // Then all attraction names assigned to that area should be listed in the left 30% of the screen
 // And the attraction type should be in parenthesis next to the name
 // And the name should be a hyperlink
-},{"./interactDom":4,"jquery":9}],2:[function(require,module,exports){
+},{"./interactDom":4,"jquery":8}],2:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
@@ -107,7 +107,7 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":9}],3:[function(require,module,exports){
+},{"jquery":8}],3:[function(require,module,exports){
 "use strict";
 
 const $ = require("jquery");
@@ -131,7 +131,7 @@ module.exports.formatData = (data) => {
     });
     return attractions;
 };
-},{"jquery":9}],4:[function(require,module,exports){
+},{"jquery":8}],4:[function(require,module,exports){
 'use strict';
 const { attractionArea } = require("./timeOnLoad");
 
@@ -166,16 +166,28 @@ function getTimeString (timeArray){
 }
 
 
+
 },{"./timeOnLoad":8,"jquery":9}],5:[function(require,module,exports){
 "use strict";
 
+
+const d = new Date();
+
+const month = d.getMonth()+1;
+const day = d.getDate();
+const year = d.getFullYear();
+
+$("#copyright").html(`&copy ${day}/${month}/${year}`);
+
+
+},{"jquery":8}],5:[function(require,module,exports){
+"use strict";
+
+
 let factory = require("./factory");
 
-let searchbar = require('./searchbar');
+
 let searchbarView = require('./searchbarView');
-
-
-
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
 let { outputToDom } = require('./interactDom');
@@ -201,69 +213,59 @@ function attractionTimes(attractions, areas) {
            }
         }
     });
+
     outputToDom(arrayOfAttractions, areas);
+
 }
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
+
     areaAttractions.attractionName(attractions, areas);
+
     searchbarView.pressingEnter(attractions);
     attractionTimes(attractions, areas);
 });
 
 
-},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbar":6,"./searchbarView":7,"./timeOnLoad":8}],6:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbarView":6,"./timeOnLoad":7}],6:[function(require,module,exports){
 'use strict';
 
-//get attraction's area id
-//list attraction info
-//highlight in map area that attraction is in
-
-module.exports.getAreaNameAndDescriptionOfSearchedAttraction = (attractions) => {
-    let attractionsAreaIdArray = [];
-    attractions.forEach(attraction => {
-        attractionsAreaIdArray.push(attraction.name);
-        attractionsAreaIdArray.push(attraction.area_id);
-        // NEW WORK
-        attractionsAreaIdArray.push(attraction.description);
-    });
-    return attractionsAreaIdArray;
-};
-
-
-
-
-
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-let searchbar = require('./searchbar');
+let $ = require('jquery');
 
 //want name to equal area id - USE REGULAR EXPRESSIONS - did it but not that way;
 //want bordered area to be unbordered when new attraction is searched;
 //if user puts in pirates, it shows all the attractions with pirates in it;
 //also would be nice if it showed suggestions as you type
 // Zanzibar Trading Co
-
-let mapSection;
+// Merchant of Venus
 
 let highlightAreaofSearchedAttractionAndOutputInfo = (attractions) => {
-    let attractionsAreaIdNameAndDescription = searchbar.getAreaNameAndDescriptionOfSearchedAttraction(attractions);
-    console.log("attraction area ids, name, and description", attractionsAreaIdNameAndDescription);
     let userText = document.getElementById("userInput");
-    for (let i=0; i<attractionsAreaIdNameAndDescription.length; i++) {
-        if (userText.value === attractionsAreaIdNameAndDescription[i]) {
-        // if (attractionsAreaIdNameAndDescription[i].includes(userText.value)) {
-            let correspondingId = attractionsAreaIdNameAndDescription[i + 1];
-            let mapSection = document.getElementById(`mapArea${correspondingId}`);
-            mapSection.style.border = "none";
-            console.log('map section', mapSection);
-            mapSection.style.border = "2px solid black";
+    // mapSection.style.border = "none";
+    console.log("attractions", attractions);
+    var re = new RegExp(userText.value, "i"); //created a new regular expression object that makes it case insensitive
+    let output = document.getElementById("currentShows");
+    output.innerHTML = "";
+    // $(".areaMap").forEach(area => {
+    //     area.toggleClass("highlighted", false);
+    // });
+    for (let i=0; i<attractions.length; i++) {
+        $(".areaMap").toggleClass("highlighted", false);
+    }
+    for (let i=0; i<attractions.length; i++) {
+        if (re.test(attractions[i].name)) {
+            let correspondingId = attractions[i].area_id;
+            //set it all to not have that class at beginning
+            let mapSection = $(`#mapArea${correspondingId}`);
+            console.log("map section", mapSection);
+            mapSection.toggleClass("highlighted", true);
+            //create highlighted border class
+            // mapSection.style.border = "2px solid black";
             let output = document.getElementById("currentShows");
-            output.innerHTML = `
-            ${attractionsAreaIdNameAndDescription[i]}: ${attractionsAreaIdNameAndDescription[i + 2]}
+            output.innerHTML += `
+            ${attractions[i].name}: ${attractions[i].description} <br> <br>
             `;
         }
     }
@@ -274,15 +276,13 @@ module.exports.pressingEnter = (attractions) => {
     userText.addEventListener('keypress', function (e) {
     var key = e.keyCode;
         if (key === 13) {
-            // console.log("mapSection:", mapSection);
-            // mapSection.style.border = "none";
             highlightAreaofSearchedAttractionAndOutputInfo(attractions);
             userText.value = "";
         }
     });
 };
 
-},{"./searchbar":6}],8:[function(require,module,exports){
+},{"jquery":8}],7:[function(require,module,exports){
 "use strict";
 let moment = require("moment");
 
@@ -309,7 +309,7 @@ module.exports.attractionArea = (areas, attraction) => {
     }
 };
 
-},{"moment":10}],9:[function(require,module,exports){
+},{"moment":9}],8:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10564,7 +10564,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 //! moment.js
 //! version : 2.20.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors

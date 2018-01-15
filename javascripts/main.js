@@ -2,10 +2,7 @@
 
 let factory = require("./factory");
 
-let searchbar = require('./searchbar');
 let searchbarView = require('./searchbarView');
-
-
 
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
@@ -32,13 +29,17 @@ function attractionTimes(attractions, areas) {
            }
         }
     });
+
     outputToDom(arrayOfAttractions, areas);
+
 }
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
+
     areaAttractions.attractionName(attractions, areas);
+
     searchbarView.pressingEnter(attractions);
     attractionTimes(attractions, areas);
 });
