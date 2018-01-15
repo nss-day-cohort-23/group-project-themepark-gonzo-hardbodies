@@ -56,11 +56,7 @@ module.exports.attractionName = (attractionsData) => {
 // Then all attraction names assigned to that area should be listed in the left 30% of the screen
 // And the attraction type should be in parenthesis next to the name
 // And the name should be a hyperlink
-
-},{"jquery":7}],2:[function(require,module,exports){
-
-},{"./interactDom":4,"jquery":7}],2:[function(require,module,exports){
-
+},{"./interactDom":4,"jquery":9}],2:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
@@ -111,7 +107,7 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":7}],3:[function(require,module,exports){
+},{"jquery":9}],3:[function(require,module,exports){
 "use strict";
 
 const $ = require("jquery");
@@ -135,8 +131,7 @@ module.exports.formatData = (data) => {
     });
     return attractions;
 };
-},{"jquery":7}],4:[function(require,module,exports){
-
+},{"jquery":9}],4:[function(require,module,exports){
 'use strict';
 
 module.exports.outputToDom= (attractionArray) =>{
@@ -147,7 +142,6 @@ module.exports.outputToDom= (attractionArray) =>{
     }
 };
 },{}],5:[function(require,module,exports){
-
 "use strict";
 
 let factory = require("./factory");
@@ -198,10 +192,11 @@ Promise.all(promArr)
     console.log("attractions", attractions);
     areaAttractions.attractionName(attractions);
     searchbarView.pressingEnter(attractions);
+    attractionTimes(attractions);
 });
 
 
-},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./searchbar":5,"./searchbarView":6}],5:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbar":6,"./searchbarView":7,"./timeOnLoad":8}],6:[function(require,module,exports){
 'use strict';
 
 //get attraction's area id
@@ -224,7 +219,7 @@ module.exports.getAreaNameAndDescriptionOfSearchedAttraction = (attractions) => 
 
 
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 let searchbar = require('./searchbar');
@@ -265,12 +260,7 @@ module.exports.pressingEnter = (attractions) => {
     });
 };
 
-},{"./searchbar":5}],7:[function(require,module,exports){
-
-    attractionTimes(attractions);
-});
-
-},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./timeOnLoad":6}],6:[function(require,module,exports){
+},{"./searchbar":6}],8:[function(require,module,exports){
 "use strict";
 let moment = require("moment");
 
@@ -308,8 +298,7 @@ module.exports.attractionsByTime = (timeArray) => {
             // then compare theHour with the new hour //
 };
 
-},{"moment":8}],7:[function(require,module,exports){
-
+},{"moment":10}],9:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10564,7 +10553,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 //! moment.js
 //! version : 2.20.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
