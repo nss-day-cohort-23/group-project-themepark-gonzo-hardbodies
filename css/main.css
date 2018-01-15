@@ -6,6 +6,7 @@
     padding: 20%;
     justify-content: right;
     /* background-image: url(../images/demoImg.jpg); */
+    max-width: 70vw;
     
 }
 
