@@ -33,3 +33,14 @@ module.exports.outputToDom= (attractionArray) =>{
 
 
 
+//footer
+
+
+const d = new Date();
+
+const month = d.getMonth()+1;
+const day = d.getDate();
+const year = d.getFullYear();
+
+$("#copyright").html(`&copy ${day}/${month}/${year}`);
+
