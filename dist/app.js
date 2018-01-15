@@ -56,7 +56,7 @@ module.exports.attractionName = (attractionsData) => {
 // Then all attraction names assigned to that area should be listed in the left 30% of the screen
 // And the attraction type should be in parenthesis next to the name
 // And the name should be a hyperlink
-},{"./interactDom":4,"jquery":9}],2:[function(require,module,exports){
+},{"./interactDom":4,"jquery":8}],2:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
@@ -107,7 +107,7 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":9}],3:[function(require,module,exports){
+},{"jquery":8}],3:[function(require,module,exports){
 "use strict";
 
 const $ = require("jquery");
@@ -131,7 +131,7 @@ module.exports.formatData = (data) => {
     });
     return attractions;
 };
-},{"jquery":9}],4:[function(require,module,exports){
+},{"jquery":8}],4:[function(require,module,exports){
 'use strict';
 let $ = require("jquery");
 
@@ -168,21 +168,12 @@ module.exports.outputToDom= (attractionArray) =>{
 
 
 
-},{"jquery":9}],5:[function(require,module,exports){
+},{"jquery":8}],5:[function(require,module,exports){
 "use strict";
 
 let factory = require("./factory");
 
-let searchbar = require('./searchbar');
 let searchbarView = require('./searchbarView');
-
-
-// factory.fetchAttractions()
-// .then(attractions => {
-//     searchbarView.pressingEnter(attractions);
-//     console.log("attractions", attractions);
-// });
-
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
 let { outputToDom } = require('./interactDom');
@@ -209,71 +200,43 @@ function attractionTimes(attractions) {
         }
 
     });
-    console.log('arrayOfAttractions',arrayOfAttractions);
     outputToDom(arrayOfAttractions);
 }
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
-    console.log("attractions", attractions);
     areaAttractions.attractionName(attractions);
     searchbarView.pressingEnter(attractions);
     attractionTimes(attractions);
 });
 
 
-},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbar":6,"./searchbarView":7,"./timeOnLoad":8}],6:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbarView":6,"./timeOnLoad":7}],6:[function(require,module,exports){
 'use strict';
 
-//get attraction's area id
-//list attraction info
-//highlight in map area that attraction is in
-
-module.exports.getAreaNameAndDescriptionOfSearchedAttraction = (attractions) => {
-    let attractionsAreaIdArray = [];
-    attractions.forEach(attraction => {
-        attractionsAreaIdArray.push(attraction.name);
-        attractionsAreaIdArray.push(attraction.area_id);
-        // NEW WORK
-        attractionsAreaIdArray.push(attraction.description);
-    });
-    return attractionsAreaIdArray;
-};
-
-
-
-
-
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-let searchbar = require('./searchbar');
+let $ = require('jquery');
 
 //want name to equal area id - USE REGULAR EXPRESSIONS - did it but not that way;
 //want bordered area to be unbordered when new attraction is searched;
 //if user puts in pirates, it shows all the attractions with pirates in it;
 //also would be nice if it showed suggestions as you type
 // Zanzibar Trading Co
+// Merchant of Venus
 
 let mapSection;
 
 let highlightAreaofSearchedAttractionAndOutputInfo = (attractions) => {
-    let attractionsAreaIdNameAndDescription = searchbar.getAreaNameAndDescriptionOfSearchedAttraction(attractions);
-    console.log("attraction area ids, name, and description", attractionsAreaIdNameAndDescription);
     let userText = document.getElementById("userInput");
-    for (let i=0; i<attractionsAreaIdNameAndDescription.length; i++) {
-        if (userText.value === attractionsAreaIdNameAndDescription[i]) {
-        // if (attractionsAreaIdNameAndDescription[i].includes(userText.value)) {
-            let correspondingId = attractionsAreaIdNameAndDescription[i + 1];
+    for (let i=0; i<attractions.length; i++) {
+        if (userText.value === attractions[i].name) {
+            let correspondingId = attractions[i].area_id;
             let mapSection = document.getElementById(`mapArea${correspondingId}`);
             mapSection.style.border = "none";
-            console.log('map section', mapSection);
             mapSection.style.border = "2px solid black";
             let output = document.getElementById("currentShows");
             output.innerHTML = `
-            ${attractionsAreaIdNameAndDescription[i]}: ${attractionsAreaIdNameAndDescription[i + 2]}
+            ${attractions[i].name}: ${attractions[i].description}
             `;
         }
     }
@@ -292,7 +255,7 @@ module.exports.pressingEnter = (attractions) => {
     });
 };
 
-},{"./searchbar":6}],8:[function(require,module,exports){
+},{"jquery":8}],7:[function(require,module,exports){
 "use strict";
 let moment = require("moment");
 
@@ -330,7 +293,7 @@ module.exports.attractionsByTime = (timeArray) => {
             // then compare theHour with the new hour //
 };
 
-},{"moment":10}],9:[function(require,module,exports){
+},{"moment":9}],8:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10585,7 +10548,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 //! moment.js
 //! version : 2.20.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
