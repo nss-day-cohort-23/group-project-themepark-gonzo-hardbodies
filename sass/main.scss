@@ -6,30 +6,6 @@ $fantasyland-color: #E73C81;
 $tomorrowland-color: #3E4D8C;
 $cind-castle-color: #F2CF53;
 
-#map {
-    display: grid;
-    grid-template-rows: repeat(3, 50px);
-    grid-template-columns: repeat(3, 50px);
-    grid-gap: 3.5px;
-    padding: 20%;
-    justify-content: right;
-    /* background-image: url(../images/demoImg.jpg); */
-}
-
-.areaMap {
-    height: 50px;
-    width: 50px;
-    border: 1px solid black;
-}
-
-.descrip {
-    display:none;
-}
-
-.highlighted {
-    border: 2px solid black;
-}
-
 #mapArea1 {
     background-color: $main-street-color;
 }
@@ -56,4 +32,92 @@ $cind-castle-color: #F2CF53;
 
 #mapArea7 {
     background-color: $cind-castle-color;
+}
+
+#wrapper{
+    width: 90%;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-gap: 20px;
+}
+
+
+#map {
+    display: grid;
+    grid-template-rows: repeat(3, 50px);
+    grid-template-columns: repeat(3, 50px);
+    grid-gap: 3.5px;
+    padding: 20%;
+    justify-content: right;
+    /* background-image: url(../images/demoImg.jpg); */
+    max-width: 70vw;
+    
+}
+
+.areaMap {
+    height: 50px;
+    width: 50px;
+    background-color: blanchedalmond;
+    border: 1px solid black;
+    
+}
+
+.descrip {
+    display:none;
+}
+
+.item {
+    background: white;
+    text-decoration: none;
+    color: #444;
+    box-shadow: 0px 8px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    max-width: 30vw;
+}
+.item h4 {
+    font-size :20px;
+    margin: 0;
+    color: #333;
+}
+
+.item p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin: 2em 0 0 0;
+    flex: 1;
+}
+
+#currentShows{
+    width: 90%;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-gap: 20px;
+}
+
+.item:hover {
+    top: -2px;
+    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+  }
+
+@media only screen and (min-width: 500px){
+    #currentShows {
+        grid-template-columns: 1fr;
+    }
+}
+
+.highlighted {
+    border: 2px solid black;
 }
