@@ -167,6 +167,10 @@ module.exports.outputToDom= (attractionArray) =>{
 
 
 
+//footer
+var d = new Date();
+$("#copyright").html(d.getFullYear());
+
 
 },{"jquery":9}],5:[function(require,module,exports){
 "use strict";

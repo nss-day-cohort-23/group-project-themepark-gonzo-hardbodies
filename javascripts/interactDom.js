@@ -33,3 +33,7 @@ module.exports.outputToDom= (attractionArray) =>{
 
 
 
+//footer
+var d = new Date();
+$("#copyright").html(d.getFullYear());
+
