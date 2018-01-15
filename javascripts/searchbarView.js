@@ -9,19 +9,28 @@ let $ = require('jquery');
 // Zanzibar Trading Co
 // Merchant of Venus
 
-let mapSection;
-
 let highlightAreaofSearchedAttractionAndOutputInfo = (attractions) => {
     let userText = document.getElementById("userInput");
-    var re = new RegExp(userText.value, "i"); //created a new regular expression object
+    // mapSection.style.border = "none";
+    console.log("attractions", attractions);
+    var re = new RegExp(userText.value, "i"); //created a new regular expression object that makes it case insensitive
     let output = document.getElementById("currentShows");
     output.innerHTML = "";
+    // $(".areaMap").forEach(area => {
+    //     area.toggleClass("highlighted", false);
+    // });
+    for (let i=0; i<attractions.length; i++) {
+        $(".areaMap").toggleClass("highlighted", false);
+    }
     for (let i=0; i<attractions.length; i++) {
         if (re.test(attractions[i].name)) {
             let correspondingId = attractions[i].area_id;
-            let mapSection = document.getElementById(`mapArea${correspondingId}`);
-            mapSection.style.border = "none";
-            mapSection.style.border = "2px solid black";
+            //set it all to not have that class at beginning
+            let mapSection = $(`#mapArea${correspondingId}`);
+            console.log("map section", mapSection);
+            mapSection.toggleClass("highlighted", true);
+            //create highlighted border class
+            // mapSection.style.border = "2px solid black";
             let output = document.getElementById("currentShows");
             output.innerHTML += `
             ${attractions[i].name}: ${attractions[i].description} <br> <br>
@@ -35,8 +44,6 @@ module.exports.pressingEnter = (attractions) => {
     userText.addEventListener('keypress', function (e) {
     var key = e.keyCode;
         if (key === 13) {
-            // console.log("mapSection:", mapSection);
-            // mapSection.style.border = "none";
             highlightAreaofSearchedAttractionAndOutputInfo(attractions);
             userText.value = "";
         }

@@ -19,3 +19,7 @@
 .descrip {
     display:none;
 }
+
+.highlighted {
+    border: 2px solid black;
+}
