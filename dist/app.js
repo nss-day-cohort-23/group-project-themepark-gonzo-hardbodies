@@ -5,8 +5,8 @@ const {outputToDom} = require('./interactDom');
 
 
 
-module.exports.attractionName = (attractionsData) => {
-   
+module.exports.attractionName = (attractionsData, areas) => {
+    
     //loop through attractions array
     let $map = $("#map");
 
@@ -31,7 +31,7 @@ module.exports.attractionName = (attractionsData) => {
             });
 
             console.log("attraction array",attractionArray);
-            outputToDom(attractionArray);
+            outputToDom(attractionArray, areas);
         }   
     });
 
@@ -56,7 +56,7 @@ module.exports.attractionName = (attractionsData) => {
 // Then all attraction names assigned to that area should be listed in the left 30% of the screen
 // And the attraction type should be in parenthesis next to the name
 // And the name should be a hyperlink
-},{"./interactDom":4,"jquery":9}],2:[function(require,module,exports){
+},{"./interactDom":4,"jquery":8}],2:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
@@ -107,7 +107,7 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":9}],3:[function(require,module,exports){
+},{"jquery":8}],3:[function(require,module,exports){
 "use strict";
 
 const $ = require("jquery");
@@ -131,41 +131,41 @@ module.exports.formatData = (data) => {
     });
     return attractions;
 };
-},{"jquery":9}],4:[function(require,module,exports){
+},{"jquery":8}],4:[function(require,module,exports){
 'use strict';
+const { attractionArea } = require("./timeOnLoad");
+
 let $ = require("jquery");
 
-module.exports.outputToDom= (attractionArray) =>{
+module.exports.outputToDom= (attractionArray, areas) =>{
     let currentShow = document.getElementById("currentShows");
     currentShow.innerHTML = "";
     for (let i = 0; i < attractionArray.length; i++) {
+        let attractionAreaVar = attractionArea(areas, attractionArray[i]);
         if (attractionArray[i].hasOwnProperty('times')){
-            console.log("help");
-            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name}</a><p class="descrip>${attractionArray[i].description}${attractionArray[i].times}</p><h4></div>`;
+
+            let gotTimeString = getTimeString(attractionArray[i].times);
+            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name} (${attractionAreaVar})</a><p>${gotTimeString}</p><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
         } else {
-            currentShow.innerHTML += `<div class="item"><h4><a href="#">${attractionArray[i].name}</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
+            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name} (${attractionAreaVar})</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;  
 
         }
     }
-
     $(document).on("click",$(".link"), function(){
-        console.log("you clicked on link");
-        console.log("et", event.target);
-        // $(event.target).next().first("p:hidden").css('visibility','visible');
-        // console.log("first event.next", $(event.target).next());
-        // $(".descrip").hide();
         $(".descrip").hide();
         $(event.target).siblings(".descrip").toggle();
-        
+        event.preventDefault();
         }
     );
-    // .on("click",event.target,function(){
-    //     $(event.target).parent().parent().prev().first("p:hidden").css('visibility','hidden');
-    // });
-
 };
 
-
+function getTimeString (timeArray){
+    let timeString = '';
+    for (let i = 0; i < timeArray.length; i++) {
+    timeString += `${timeArray[i]} `;           
+    }
+    return timeString;
+}
 
 //footer
 
@@ -179,20 +179,12 @@ const year = d.getFullYear();
 $("#copyright").html(`&copy ${day}/${month}/${year}`);
 
 
-},{"jquery":9}],5:[function(require,module,exports){
+},{"./timeOnLoad":7,"jquery":8}],5:[function(require,module,exports){
 "use strict";
 
 let factory = require("./factory");
 
-let searchbar = require('./searchbar');
 let searchbarView = require('./searchbarView');
-
-
-// factory.fetchAttractions()
-// .then(attractions => {
-//     searchbarView.pressingEnter(attractions);
-//     console.log("attractions", attractions);
-// });
 
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
@@ -208,7 +200,7 @@ let promArr =[
     factory.fetchAttractionTypes()    
 ];
 
-function attractionTimes(attractions) {
+function attractionTimes(attractions, areas) {
     let arrayOfAttractions = [];
     attractions.forEach(attraction => {
         if (!attraction.times) {
@@ -218,73 +210,49 @@ function attractionTimes(attractions) {
                arrayOfAttractions.push(attraction);
            }
         }
-
     });
-    console.log('arrayOfAttractions',arrayOfAttractions);
-    outputToDom(arrayOfAttractions);
+
+    outputToDom(arrayOfAttractions, areas);
+
 }
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
-    console.log("attractions", attractions);
-    areaAttractions.attractionName(attractions);
+
+    areaAttractions.attractionName(attractions, areas);
+
     searchbarView.pressingEnter(attractions);
-    attractionTimes(attractions);
+    attractionTimes(attractions, areas);
 });
 
 
-},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbar":6,"./searchbarView":7,"./timeOnLoad":8}],6:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbarView":6,"./timeOnLoad":7}],6:[function(require,module,exports){
 'use strict';
 
-//get attraction's area id
-//list attraction info
-//highlight in map area that attraction is in
+let $ = require('jquery');
 
-module.exports.getAreaNameAndDescriptionOfSearchedAttraction = (attractions) => {
-    let attractionsAreaIdArray = [];
-    attractions.forEach(attraction => {
-        attractionsAreaIdArray.push(attraction.name);
-        attractionsAreaIdArray.push(attraction.area_id);
-        // NEW WORK
-        attractionsAreaIdArray.push(attraction.description);
-    });
-    return attractionsAreaIdArray;
-};
-
-
-
-
-
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-let searchbar = require('./searchbar');
-
-//want name to equal area id - USE REGULAR EXPRESSIONS - did it but not that way;
-//want bordered area to be unbordered when new attraction is searched;
-//if user puts in pirates, it shows all the attractions with pirates in it;
 //also would be nice if it showed suggestions as you type
 // Zanzibar Trading Co
-
-let mapSection;
+// Merchant of Venus
 
 let highlightAreaofSearchedAttractionAndOutputInfo = (attractions) => {
-    let attractionsAreaIdNameAndDescription = searchbar.getAreaNameAndDescriptionOfSearchedAttraction(attractions);
-    console.log("attraction area ids, name, and description", attractionsAreaIdNameAndDescription);
     let userText = document.getElementById("userInput");
-    for (let i=0; i<attractionsAreaIdNameAndDescription.length; i++) {
-        if (userText.value === attractionsAreaIdNameAndDescription[i]) {
-        // if (attractionsAreaIdNameAndDescription[i].includes(userText.value)) {
-            let correspondingId = attractionsAreaIdNameAndDescription[i + 1];
-            let mapSection = document.getElementById(`mapArea${correspondingId}`);
-            mapSection.style.border = "none";
-            console.log('map section', mapSection);
-            mapSection.style.border = "2px solid black";
+    var re = new RegExp(userText.value, "i"); //created a new regular expression object that makes it case insensitive
+    let output = document.getElementById("currentShows");
+    output.innerHTML = "";
+
+    for (let i=0; i<attractions.length; i++) {
+        $(".areaMap").toggleClass("highlighted", false);
+    }
+    for (let i=0; i<attractions.length; i++) {
+        if (re.test(attractions[i].name)) {
+            let correspondingId = attractions[i].area_id;
+            let mapSection = $(`#mapArea${correspondingId}`);
+            mapSection.toggleClass("highlighted", true);
             let output = document.getElementById("currentShows");
-            output.innerHTML = `
-            ${attractionsAreaIdNameAndDescription[i]}: ${attractionsAreaIdNameAndDescription[i + 2]}
+            output.innerHTML += `
+            ${attractions[i].name}: ${attractions[i].description} <br> <br>
             `;
         }
     }
@@ -295,53 +263,40 @@ module.exports.pressingEnter = (attractions) => {
     userText.addEventListener('keypress', function (e) {
     var key = e.keyCode;
         if (key === 13) {
-            // console.log("mapSection:", mapSection);
-            // mapSection.style.border = "none";
             highlightAreaofSearchedAttractionAndOutputInfo(attractions);
             userText.value = "";
         }
     });
 };
 
-},{"./searchbar":6}],8:[function(require,module,exports){
+},{"jquery":8}],7:[function(require,module,exports){
 "use strict";
 let moment = require("moment");
 
 
 module.exports.attractionsByTime = (timeArray) => {
-    console.log("It's working!");
     let theHour = +moment().format("H");
-    console.log('the hour',theHour);
-
     for (let i = 0; i < timeArray.length; i++) {
         const time = timeArray[i];
-
         let timeStringArray = time.split(":");
-
-        console.log('timeStringArray',timeStringArray);
-       
-        console.log('addition test', +timeStringArray[0] + 12);
-        console.log('typeOf', typeof(theHour));
-        console.log('theHour',theHour);
-
-        if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("AM")) {
-            console.log('true');
+        if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("AM")) {           
             return true;
-        } else if (+timeStringArray[0] + 12 === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("PM")) {
-            console.log('true');
+        } else if (+timeStringArray[0] + 12 === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("PM")) {      
             return true;
         } 
     }
-    console.log('you done fucked up');
     return false;
-        // loop through attractions.times and compare to theHour //
-            // string.split to only compare theHour with the hour //
-            // look through string to see if AM or PM is contained therin //
-            // if PM is included, add 12 to the number //
-            // then compare theHour with the new hour //
 };
 
-},{"moment":10}],9:[function(require,module,exports){
+module.exports.attractionArea = (areas, attraction) => {
+    for (let i = 0; i < areas.length; i++) {
+        if (areas[i].id === attraction.area_id) {
+            return areas[i].name;
+        }        
+    }
+};
+
+},{"moment":9}],8:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10596,7 +10551,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 //! moment.js
 //! version : 2.20.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
