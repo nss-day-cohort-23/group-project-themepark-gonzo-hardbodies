@@ -13,15 +13,18 @@ let mapSection;
 
 let highlightAreaofSearchedAttractionAndOutputInfo = (attractions) => {
     let userText = document.getElementById("userInput");
+    var re = new RegExp(userText.value, "i"); //created a new regular expression object
+    let output = document.getElementById("currentShows");
+    output.innerHTML = "";
     for (let i=0; i<attractions.length; i++) {
-        if (userText.value === attractions[i].name) {
+        if (re.test(attractions[i].name)) {
             let correspondingId = attractions[i].area_id;
             let mapSection = document.getElementById(`mapArea${correspondingId}`);
             mapSection.style.border = "none";
             mapSection.style.border = "2px solid black";
             let output = document.getElementById("currentShows");
-            output.innerHTML = `
-            ${attractions[i].name}: ${attractions[i].description}
+            output.innerHTML += `
+            ${attractions[i].name}: ${attractions[i].description} <br> <br>
             `;
         }
     }
