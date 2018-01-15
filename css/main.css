@@ -6,7 +6,7 @@
     padding: 20%;
     justify-content: right;
     /* background-image: url(../images/demoImg.jpg); */
-
+    
 }
 
 .areaMap {
@@ -21,13 +21,13 @@
     display:none;
 }
 
-#currentShows {
+#wrapper{
     width: 90%;
     max-width: 1240px;
     margin: 0 auto;
     display: grid;
 
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     grid-gap: 20px;
 }
@@ -55,6 +55,7 @@
     text-transform: uppercase;
     letter-spacing: .05em;
     margin: 2em 0 0 0;
+    flex: 1;
 }
 
 .item:hover {
