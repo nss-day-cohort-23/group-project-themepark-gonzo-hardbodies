@@ -6,6 +6,7 @@
     padding: 20%;
     justify-content: right;
     /* background-image: url(../images/demoImg.jpg); */
+
 }
 
 .areaMap {
@@ -41,9 +42,29 @@
     min-height: 100%;
     max-width: 30vw;
 }
+.item h4 {
+    font-size :20px;
+    margin: 0;
+    color: #333;
+}
+
+.item p {
+    font-size: 12px;
+    font-weight: bold;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin: 2em 0 0 0;
+}
+
+.item:hover {
+    top: -2px;
+    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+  }
 
 @media only screen and (min-width: 500px){
     #currentShows {
         grid-template-columns: 1fr;
     }
 }
+
