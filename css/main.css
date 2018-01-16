@@ -19,6 +19,7 @@
 #mapArea7 {
   background-color: #F2CF53; }
 
+
 #wrapper {
   width: 90%;
   max-width: 1240px;
@@ -26,7 +27,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-  grid-gap: 20px; }
+  grid-gap: 20px; 
+  background-color: rgba(70, 124, 175, 0.301);
+}
+
 
 #map {
   display: grid;
@@ -78,11 +82,26 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-  grid-gap: 20px; }
+  grid-gap: 30px; }
 
 .item:hover {
   top: -2px;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2); 
+}
+
+h1,h3,p,li, h4, a {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+  color: rgb(216, 9, 9);
+  text-decoration: none;
+}
+p2 {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-align: center;
+  color: rgb(238, 235, 235);
+  text-decoration: none;
+  font-size: 2rem;
+}
 
 @media only screen and (min-width: 500px) {
   #currentShows {

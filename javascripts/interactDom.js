@@ -42,5 +42,5 @@ const month = d.getMonth()+1;
 const day = d.getDate();
 const year = d.getFullYear();
 
-$("#copyright").html(`&copy ${day}/${month}/${year}`);
+$("#copyright").html(`<p>&copy ${day}/${month}/${year}</p>`);
 

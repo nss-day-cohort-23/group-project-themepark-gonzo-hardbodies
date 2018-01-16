@@ -176,7 +176,7 @@ const month = d.getMonth()+1;
 const day = d.getDate();
 const year = d.getFullYear();
 
-$("#copyright").html(`&copy ${day}/${month}/${year}`);
+$("#copyright").html(`<p>&copy ${day}/${month}/${year}</p>`);
 
 
 },{"./timeOnLoad":7,"jquery":8}],5:[function(require,module,exports){
@@ -251,9 +251,9 @@ let highlightAreaofSearchedAttractionAndOutputInfo = (attractions) => {
             let mapSection = $(`#mapArea${correspondingId}`);
             mapSection.toggleClass("highlighted", true);
             let output = document.getElementById("currentShows");
-            output.innerHTML += `
+            output.innerHTML += `<p2>
             ${attractions[i].name}: ${attractions[i].description} <br> <br>
-            `;
+            </p2>`;
         }
     }
 };
