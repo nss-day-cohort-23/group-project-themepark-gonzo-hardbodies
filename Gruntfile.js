@@ -19,6 +19,13 @@ module.exports = function(grunt) {
           browserify: true
         }
       },
+      sass: {
+        dist: {
+          files: {
+            "./css/main.css": "./sass/main.scss"
+          }
+        }
+      },
       watch: {
         javascripts: {
           files: ['./javascripts/**/*.js'],
@@ -26,6 +33,10 @@ module.exports = function(grunt) {
         },
         hbs: {
           files: ['./templates/**/*.hbs']
+        },
+        sass: {
+          files: ["./sass/**/*.scss"],
+          tasks: ["sass"]
         }
       }
     });
