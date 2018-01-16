@@ -1,7 +1,5 @@
 "use strict";
 
-const $ = require("jquery");
-
 module.exports.formatData = (data) => {
     let attractions = data[0];
     let areas = data[1];

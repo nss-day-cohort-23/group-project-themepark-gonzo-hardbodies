@@ -6,6 +6,7 @@ module.exports.attractionsByTime = (timeArray) => {
     let theHour = +moment().format("H");
     for (let i = 0; i < timeArray.length; i++) {
         const time = timeArray[i];
+        console.log('timeArray[0]',timeArray[0]);
         let timeStringArray = time.split(":");
         if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("AM")) {           
             return true;

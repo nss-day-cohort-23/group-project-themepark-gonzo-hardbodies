@@ -5,7 +5,7 @@
     grid-gap: 3.5px;
     padding: 20%;
     justify-content: right;
-    /* background-image: url(../images/demoImg.jpg); */
+    background-image: url(../images/demoImg.jpg);
 }
 
 .areaMap {
@@ -23,3 +23,5 @@
 .highlighted {
     border: 2px solid black;
 }
+
+
