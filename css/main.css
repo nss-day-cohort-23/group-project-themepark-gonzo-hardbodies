@@ -29,6 +29,7 @@
   grid-gap: 20px; }
 
 #map {
+
   display: grid;
   grid-template-rows: repeat(3, 50px);
   grid-template-columns: repeat(3, 50px);
@@ -37,6 +38,7 @@
   justify-content: right;
   /* background-image: url(../images/demoImg.jpg); */
   max-width: 70vw; }
+
 
 .areaMap {
   height: 50px;
@@ -88,6 +90,8 @@
   #currentShows {
     grid-template-columns: 1fr; } }
 .highlighted {
+
   border: 2px solid black; }
 
 /*# sourceMappingURL=main.css.map */
+
