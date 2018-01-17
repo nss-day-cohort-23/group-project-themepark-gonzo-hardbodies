@@ -7,7 +7,7 @@ let searchbarView = require('./searchbarView');
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
 let { outputToDom } = require('./interactDom');
-
+let timeDropdown = require('./timeDropdown');
 
 let areaAttractions = require("./areaAttractions");
 
@@ -33,14 +33,16 @@ function attractionTimes(attractions, areas) {
     outputToDom(arrayOfAttractions, areas);
 
 }
+
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
-
+    timeDropdown.userSelectsTime(attractions);
     areaAttractions.attractionName(attractions, areas);
 
     searchbarView.pressingEnter(attractions);
     attractionTimes(attractions, areas);
+    
 });
 

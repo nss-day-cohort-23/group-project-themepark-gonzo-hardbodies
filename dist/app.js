@@ -56,7 +56,7 @@ module.exports.attractionName = (attractionsData, areas) => {
 // Then all attraction names assigned to that area should be listed in the left 30% of the screen
 // And the attraction type should be in parenthesis next to the name
 // And the name should be a hyperlink
-},{"./interactDom":4,"jquery":8}],2:[function(require,module,exports){
+},{"./interactDom":4,"jquery":9}],2:[function(require,module,exports){
 "use strict";
 const $ = require("jquery");
 let fbURL = "https://theme-park-e94aa.firebaseio.com/-L2W12A9m_x8_AJGjHyj";
@@ -107,10 +107,8 @@ module.exports.fetchAttractionTypes = () => {
     });
 };     
 
-},{"jquery":8}],3:[function(require,module,exports){
+},{"jquery":9}],3:[function(require,module,exports){
 "use strict";
-
-const $ = require("jquery");
 
 module.exports.formatData = (data) => {
     let attractions = data[0];
@@ -131,7 +129,7 @@ module.exports.formatData = (data) => {
     });
     return attractions;
 };
-},{"jquery":8}],4:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 const { attractionArea } = require("./timeOnLoad");
 
@@ -181,7 +179,7 @@ $("#copyright").html(`<p>&copy ${day}/${month}/${year}</p>`);
 
 
 
-},{"./timeOnLoad":7,"jquery":8}],5:[function(require,module,exports){
+},{"./timeOnLoad":8,"jquery":9}],5:[function(require,module,exports){
 "use strict";
 
 let factory = require("./factory");
@@ -191,7 +189,7 @@ let searchbarView = require('./searchbarView');
 let formatter = require("./formatter");
 let { attractionsByTime } = require("./timeOnLoad");
 let { outputToDom } = require('./interactDom');
-
+let timeDropdown = require('./timeDropdown');
 
 let areaAttractions = require("./areaAttractions");
 
@@ -217,19 +215,21 @@ function attractionTimes(attractions, areas) {
     outputToDom(arrayOfAttractions, areas);
 
 }
+
 Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
-
+    timeDropdown.userSelectsTime(attractions);
     areaAttractions.attractionName(attractions, areas);
 
     searchbarView.pressingEnter(attractions);
     attractionTimes(attractions, areas);
+    
 });
 
 
-},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbarView":6,"./timeOnLoad":7}],6:[function(require,module,exports){
+},{"./areaAttractions":1,"./factory":2,"./formatter":3,"./interactDom":4,"./searchbarView":6,"./timeDropdown":7,"./timeOnLoad":8}],6:[function(require,module,exports){
 'use strict';
 
 let $ = require('jquery');
@@ -271,7 +271,41 @@ module.exports.pressingEnter = (attractions) => {
     });
 };
 
-},{"jquery":8}],7:[function(require,module,exports){
+},{"jquery":9}],7:[function(require,module,exports){
+// module that listens for the user's selection and finds attractions based on the time
+'use strict';
+function shouldBeShown(attraction, selectedTime) {
+    let shouldBeShownVal = false;
+    if (attraction.times == null) {
+        return true;
+    }
+    attraction.times.forEach(time => {
+        let timeInt = +time.split(':')[0];
+        if (+selectedTime <= timeInt) {
+            shouldBeShownVal = true; 
+        }
+    });
+    return shouldBeShownVal;
+}
+function filterBySelectedTime(attractions, selectedTime) {
+    let filteredAttractions = attractions.filter(attraction => {
+        return shouldBeShown(attraction, selectedTime);
+    });
+    console.log('filteredAttractions',filteredAttractions);
+
+    
+}
+function enableEventListener(attractions) {
+    let timeSelect = document.getElementById("startTimeSelect");
+    timeSelect.addEventListener("change", e => {
+        filterBySelectedTime(attractions, e.target.value);
+    });   
+}
+
+module.exports.userSelectsTime = (attractions) => {
+    enableEventListener(attractions);
+};
+},{}],8:[function(require,module,exports){
 "use strict";
 let moment = require("moment");
 
@@ -280,6 +314,7 @@ module.exports.attractionsByTime = (timeArray) => {
     let theHour = +moment().format("H");
     for (let i = 0; i < timeArray.length; i++) {
         const time = timeArray[i];
+        console.log('timeArray[0]',timeArray[0]);
         let timeStringArray = time.split(":");
         if (+timeStringArray[0] === theHour && +timeStringArray[0] < 22 && timeStringArray[1].includes("AM")) {           
             return true;
@@ -298,7 +333,7 @@ module.exports.attractionArea = (areas, attraction) => {
     }
 };
 
-},{"moment":9}],8:[function(require,module,exports){
+},{"moment":10}],9:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.2.1
  * https://jquery.com/
@@ -10553,7 +10588,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 //! moment.js
 //! version : 2.20.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors

@@ -49,6 +49,7 @@ html {
 
 
 #map {
+
   display: grid;
   grid-template-rows: repeat(3, 300px);
   grid-template-columns: repeat(3, 300px);
@@ -62,6 +63,7 @@ html {
   margin-top: 0rem;
   width: 360px;
 }
+
 
 
 .areaMap {
@@ -167,3 +169,4 @@ p2 {
   border: .3rem  dotted white; }
 
 /*# sourceMappingURL=main.css.map */
+
