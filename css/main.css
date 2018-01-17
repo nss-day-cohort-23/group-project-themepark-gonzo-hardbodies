@@ -132,6 +132,13 @@ h1,h3,p,li, h4, a {
   text-align: center;
   color: rgb(216, 9, 9);
   text-decoration: none;
+  text-shadow: 0 4px 5px rgba(0, 0, 0, 0.2); 
+}
+h1{
+  font-size: 5rem;
+}
+p{
+  font-size: 2rem;
 }
 p2 {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -139,6 +146,7 @@ p2 {
   color: rgb(238, 235, 235);
   text-decoration: none;
   font-size: 2rem;
+  text-shadow: 0 4px 5px rgba(0, 0, 0, 0.2); 
 }
 #wrapper{
   width: 100%;
@@ -148,10 +156,14 @@ p2 {
   margin-top: 0px;
   margin-bottom: 200px;
 }
+
+#bod{
+  background-color:  rgb(210, 222, 238);
+}
 @media only screen and (min-width: 500px) {
   #currentShows {
     grid-template-columns: 1fr; } }
 .highlighted {
-  border: 2px solid black; }
+  border: .3rem  dotted white; }
 
 /*# sourceMappingURL=main.css.map */
