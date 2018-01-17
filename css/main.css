@@ -117,6 +117,8 @@ html {
   width: 190px;
   background-color: rgb(210, 222, 238);
   color: #fff;
+  overflow: scroll;
+  max-height: 75vh;
 }
 
 
