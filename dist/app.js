@@ -157,6 +157,27 @@ module.exports.outputToDom= (attractionArray, areas) =>{
         }
     );
 };
+module.exports.updateToDom= (attractionArray) =>{
+    let currentShow = document.getElementById("currentShows");
+    currentShow.innerHTML = "";
+    for (let i = 0; i < attractionArray.length; i++) {
+        // let attractionAreaVar = attractionArea(attractionArray[i]);
+        if (attractionArray[i].hasOwnProperty('times')){
+
+            let gotTimeString = getTimeString(attractionArray[i].times);
+            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name} </a><p>${gotTimeString}</p><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
+        } else {
+            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name}</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;  
+
+        }
+    }
+    $(document).on("click",$(".link"), function(){
+        $(".descrip").hide();
+        $(event.target).siblings(".descrip").toggle();
+        event.preventDefault();
+        }
+    );
+};
 
 function getTimeString (timeArray){
     let timeString = '';
@@ -220,7 +241,7 @@ Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
-    timeDropdown.userSelectsTime(attractions);
+    timeDropdown.userSelectsTime(attractions,areas);
     areaAttractions.attractionName(attractions, areas);
 
     searchbarView.pressingEnter(attractions);
@@ -272,8 +293,13 @@ module.exports.pressingEnter = (attractions) => {
 };
 
 },{"jquery":9}],7:[function(require,module,exports){
+
+
 // module that listens for the user's selection and finds attractions based on the time
 'use strict';
+const controller = require('./interactDom');
+const factory = require('./factory');
+
 function shouldBeShown(attraction, selectedTime) {
     let shouldBeShownVal = false;
     if (attraction.times == null) {
@@ -294,19 +320,24 @@ function filterBySelectedTime(attractions, selectedTime) {
     });
     console.log('filteredAttractions',filteredAttractions);
 
+    controller.updateToDom(filteredAttractions);
+    
+
     
 }
 function enableEventListener(attractions) {
     let timeSelect = document.getElementById("startTimeSelect");
     timeSelect.addEventListener("change", e => {
         filterBySelectedTime(attractions, e.target.value);
+        
     });   
 }
 
 module.exports.userSelectsTime = (attractions) => {
     enableEventListener(attractions);
+    
 };
-},{}],8:[function(require,module,exports){
+},{"./factory":2,"./interactDom":4}],8:[function(require,module,exports){
 "use strict";
 let moment = require("moment");
 

@@ -25,6 +25,27 @@ module.exports.outputToDom= (attractionArray, areas) =>{
         }
     );
 };
+module.exports.updateToDom= (attractionArray) =>{
+    let currentShow = document.getElementById("currentShows");
+    currentShow.innerHTML = "";
+    for (let i = 0; i < attractionArray.length; i++) {
+        // let attractionAreaVar = attractionArea(attractionArray[i]);
+        if (attractionArray[i].hasOwnProperty('times')){
+
+            let gotTimeString = getTimeString(attractionArray[i].times);
+            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name} </a><p>${gotTimeString}</p><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
+        } else {
+            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name}</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;  
+
+        }
+    }
+    $(document).on("click",$(".link"), function(){
+        $(".descrip").hide();
+        $(event.target).siblings(".descrip").toggle();
+        event.preventDefault();
+        }
+    );
+};
 
 function getTimeString (timeArray){
     let timeString = '';

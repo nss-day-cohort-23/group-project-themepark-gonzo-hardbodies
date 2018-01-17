@@ -1,5 +1,10 @@
+
+
 // module that listens for the user's selection and finds attractions based on the time
 'use strict';
+const controller = require('./interactDom');
+const factory = require('./factory');
+
 function shouldBeShown(attraction, selectedTime) {
     let shouldBeShownVal = false;
     if (attraction.times == null) {
@@ -20,15 +25,20 @@ function filterBySelectedTime(attractions, selectedTime) {
     });
     console.log('filteredAttractions',filteredAttractions);
 
+    controller.updateToDom(filteredAttractions);
+    
+
     
 }
 function enableEventListener(attractions) {
     let timeSelect = document.getElementById("startTimeSelect");
     timeSelect.addEventListener("change", e => {
         filterBySelectedTime(attractions, e.target.value);
+        
     });   
 }
 
 module.exports.userSelectsTime = (attractions) => {
     enableEventListener(attractions);
+    
 };
