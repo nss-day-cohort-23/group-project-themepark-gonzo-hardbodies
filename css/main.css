@@ -1,3 +1,19 @@
+html {
+  box-shadow: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
 #mapArea1 {
   background-color: #730217; }
 
@@ -20,16 +36,16 @@
   background-color: #F2CF53; }
 
 
-#wrapper {
+/* #wrapper {
   width: 90%;
   max-width: 1240px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-  grid-gap: 20px; 
+  grid-gap: 7rem; 
   background-color: rgba(70, 124, 175, 0.301);
-}
+} */
 
 
 #map {
@@ -40,7 +56,10 @@
   padding: 20%;
   justify-content: right;
   /* background-image: url(../images/demoImg.jpg); */
-  max-width: 70vw; }
+  max-width: 70vw; 
+  top: 10px;
+}
+
 
 .areaMap {
   height: 200px;
@@ -48,11 +67,16 @@
   background-color: blanchedalmond;
   border: 1px solid black; }
 
+.areaMap:hover {
+    box-shadow: 0 4rem 5rem rgba(0, 0, 0, 0.2); 
+}
+
+
 .descrip {
   display: none; }
 
 .item {
-  background: white;
+  background: rgba(79, 147, 211, 0.301)e;
   text-decoration: none;
   color: #444;
   box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.1);
@@ -82,7 +106,16 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
-  grid-gap: 30px; }
+  grid-gap: 30px;
+  position: sticky;
+  top: 15px;
+  float: left; 
+  padding: 20px;
+  width: 190px;
+  background-color: rgb(210, 222, 238);
+  color: #fff;
+}
+
 
 .item:hover {
   top: -2px;
@@ -102,7 +135,14 @@ p2 {
   text-decoration: none;
   font-size: 2rem;
 }
-
+#wrapper{
+  width: 100%;
+  max-width: 590px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 60px;
+  margin-bottom: 200px;
+}
 @media only screen and (min-width: 500px) {
   #currentShows {
     grid-template-columns: 1fr; } }

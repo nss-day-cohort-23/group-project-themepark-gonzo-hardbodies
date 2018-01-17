@@ -1,6 +1,7 @@
 'use strict';
 const { attractionArea } = require("./timeOnLoad");
 
+
 let $ = require("jquery");
 
 module.exports.outputToDom= (attractionArray, areas) =>{
@@ -43,4 +44,5 @@ const day = d.getDate();
 const year = d.getFullYear();
 
 $("#copyright").html(`<p>&copy ${day}/${month}/${year}</p>`);
+
 
