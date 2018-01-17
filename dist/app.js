@@ -281,7 +281,8 @@ function shouldBeShown(attraction, selectedTime) {
     }
     attraction.times.forEach(time => {
         let timeInt = +time.split(':')[0];
-        if (+selectedTime <= timeInt) {
+        console.log("timeInt",timeInt,"selectedTime",+selectedTime.split(':')[0]); //CB CONSOLE LOG
+        if (+selectedTime.split(':')[0] <= timeInt) {
             shouldBeShownVal = true; 
         }
     });
