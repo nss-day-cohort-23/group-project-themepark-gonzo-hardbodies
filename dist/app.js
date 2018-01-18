@@ -170,7 +170,7 @@ module.exports.updateToDom= (attractionArray) =>{
             let gotTimeString = getTimeString(attractionArray[i].times);
             currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name}(${attractionArray[i].areaName}) </a><p>${gotTimeString}</p><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
         } else {
-            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name}</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;  
+            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name}(${attractionArray[i].areaName}</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;  
 
         }
     }
@@ -325,31 +325,19 @@ function filterBySelectedTime(attractions, selectedTime, areas) { //4. cb add ar
 
     for(let j = 0; j <filteredAttractions.length; j++){
         for (let i = 0; i < areas.length; i++) {
-        //  console.log("areas",areas[i].id); //cb
-            filteredAttractions[i].areaName = "";
-              if (areas[i].id === filteredAttractions[i].area_id){
-                 filteredAttractions[i].areaName = areas[i].name;
-                //  return filteredAttractions;
-                //  console.log(filteredAttractions, "filtered atttractions");
-                //  console.log(areas[i].name, "areas name");
+       
+            
+              if (areas[i].id === filteredAttractions[j].area_id){
+                 filteredAttractions[j].areaName = areas[i].name;
+                 
              }
-            //  console.log(filteredAttractions, "filtered atttractions");
-            //      console.log(areas[i].name, "areas name");
-            return filteredAttractions;
-         }
-         console.log(filteredAttractions, "filtered atttractions");
-                
-        //  for (let i = 0; i < filteredAttractions.length; i++){
-            //  if(areas[i].id === filteredAttractions[i].area_id) { //CB
-        //    console.log(areas[i].name, "filtered areas"); //CB
-        //  } //CB
-        // }        //CB
+         }       
+        
     }
+    console.log("filtered",filteredAttractions);
     controller.updateToDom(filteredAttractions);
-    
-
-    
 }
+
 function enableEventListener(attractions, areas) { //2. cb add areas
     let timeSelect = document.getElementById("startTimeSelect");
     // console.log("areas in enable event listener", areas, attractions);//cb
