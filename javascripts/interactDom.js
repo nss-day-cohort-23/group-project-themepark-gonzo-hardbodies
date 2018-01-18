@@ -32,11 +32,11 @@ module.exports.updateToDom= (attractionArray) =>{
     let currentShow = document.getElementById("currentShows");
     currentShow.innerHTML = "";
     for (let i = 0; i < attractionArray.length; i++) {
-        // let attractionAreaVar = attractionArea(attractionArray[i]);
+        // let attractionAreaVar = attractionArea(areas, attractionArray[i]);
         if (attractionArray[i].hasOwnProperty('times')){
 
             let gotTimeString = getTimeString(attractionArray[i].times);
-            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name} </a><p>${gotTimeString}</p><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
+            currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name}(${attractionArray[i].areaName}) </a><p>${gotTimeString}</p><p class="descrip">${attractionArray[i].description}</p><h4></div>`;
         } else {
             currentShow.innerHTML += `<div class="item"><h4><a class="link" href="#">${attractionArray[i].name}</a><p class="descrip">${attractionArray[i].description}</p><h4></div>`;  
 
