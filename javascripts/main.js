@@ -38,7 +38,7 @@ Promise.all(promArr)
 .then( (parkDataArr) => {
     let areas = parkDataArr[1];
     let attractions = formatter.formatData(parkDataArr);
-    timeDropdown.userSelectsTime(attractions);
+    timeDropdown.userSelectsTime(attractions,areas);
     areaAttractions.attractionName(attractions, areas);
 
     searchbarView.pressingEnter(attractions);

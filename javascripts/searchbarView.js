@@ -21,9 +21,9 @@ let highlightAreaofSearchedAttractionAndOutputInfo = (attractions) => {
             let mapSection = $(`#mapArea${correspondingId}`);
             mapSection.toggleClass("highlighted", true);
             let output = document.getElementById("currentShows");
-            output.innerHTML += `
+            output.innerHTML += `<p2>
             ${attractions[i].name}: ${attractions[i].description} <br> <br>
-            `;
+            </p2>`;
         }
     }
 };
