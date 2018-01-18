@@ -157,7 +157,10 @@ module.exports.outputToDom= (attractionArray, areas) =>{
         }
     );
 };
+
+
 module.exports.updateToDom= (attractionArray) =>{
+    console.log("attraction array update to dom", attractionArray);
     let currentShow = document.getElementById("currentShows");
     currentShow.innerHTML = "";
     for (let i = 0; i < attractionArray.length; i++) {
@@ -333,9 +336,9 @@ function enableEventListener(attractions) {
     });   
 }
 
-module.exports.userSelectsTime = (attractions) => {
+module.exports.userSelectsTime = (attractions,areas) => {
     enableEventListener(attractions);
-    
+    console.log("user selects times", areas);
 };
 },{"./factory":2,"./interactDom":4}],8:[function(require,module,exports){
 "use strict";

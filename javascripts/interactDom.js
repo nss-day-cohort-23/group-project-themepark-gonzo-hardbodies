@@ -25,7 +25,10 @@ module.exports.outputToDom= (attractionArray, areas) =>{
         }
     );
 };
+
+
 module.exports.updateToDom= (attractionArray) =>{
+    console.log("attraction array update to dom", attractionArray);
     let currentShow = document.getElementById("currentShows");
     currentShow.innerHTML = "";
     for (let i = 0; i < attractionArray.length; i++) {

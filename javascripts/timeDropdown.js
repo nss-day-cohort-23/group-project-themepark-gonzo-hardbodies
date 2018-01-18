@@ -38,7 +38,7 @@ function enableEventListener(attractions) {
     });   
 }
 
-module.exports.userSelectsTime = (attractions) => {
+module.exports.userSelectsTime = (attractions,areas) => {
     enableEventListener(attractions);
-    
+    console.log("user selects times", areas);
 };
